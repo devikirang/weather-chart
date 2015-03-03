@@ -1,0 +1,27 @@
+{
+  "name": "weather-charjs",
+  "version": "0.1.0",
+  "description": "openweathermap.org data into charts",
+  "appPath": "app",
+  "keywords": [
+    "chartjs",
+    "weather"
+  ],
+  "authors": [
+    "devikirang",
+    "kickstartpros.com"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.2",
+    "Chart.js": "~1.0.1",
+    "lodash": "~3.3.1"
+  }
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Weather Chart App</title>
+    <meta name="description" content="Weather Chart App">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <!-- endbower -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div id="mainContainer" class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="text-center">
+                    <h2> Weather Charts from openweathermap.org</h2>
+                </div>
+            </div>
+        </div>
+        <form id="searchForm">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label for="cityName">City name:</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                    <input type="text" name="cityName" id="inputCityName" class="form-control" value="" required="required" title="City">
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                    <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-search"></span> Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="row top-buffer">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-danger">
+                      <div class="panel-heading">
+                            <h3 class="panel-title">Temparature</h3>
+                      </div>
+                      <div class="panel-body">
+                            Panel content
+                      </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-primary">
+                      <div class="panel-heading">
+                            <h3 class="panel-title">Precipitation</h3>
+                      </div>
+                      <div class="panel-body">
+                            Panel content
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-info">
+                      <div class="panel-heading">
+                            <h3 class="panel-title">Wind</h3>
+                      </div>
+                      <div class="panel-body">
+                            Panel content
+                      </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-warning">
+                      <div class="panel-heading">
+                            <h3 class="panel-title">Pressure</h3>
+                      </div>
+                      <div class="panel-body">
+                            Panel content
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/Chart.js/Chart.min.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/app.js -->
+        <script src="scripts/weatherApp.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
