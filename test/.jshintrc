@@ -23,7 +23,9 @@
     "browser": false,
     "inject": false,
     "_": false,
-    "$": false
+    "$": false,
+    "Ember": false,
+    "Chart": false
   }
 }
 

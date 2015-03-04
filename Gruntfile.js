@@ -284,7 +284,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= appConf.dist %>',
-          src: ['*.html', 'views/{,*/}*.html', 'scripts/**/*.mustache'],
+          src: ['*.html', 'views/{,*/}*.html'],
           dest: '<%= appConf.dist %>'
         }]
       }
@@ -309,7 +309,6 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
-            '*.mustache',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
             'styles/fonts/{,*/}*.*',
@@ -322,9 +321,9 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }, {
           expand: true,
-          cwd: 'vendor/resources',
-          src: '**/*',
-          dest: '<%= appConf.dist %>/styles/vendor/resources'
+          cwd: 'bower_components/bootstrap/fonts/',
+          src: '*.*',
+          dest: '<%= appConf.dist %>/fonts'
         }]
       },
       styles: {

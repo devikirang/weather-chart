@@ -19,6 +19,9 @@
   "smarttabs": true,
   "globals": {
     "_": false,
-    "$": false
+    "$": false,
+    "Ember": false,
+    "Chart": false,
+    "App": false
   }
 }
