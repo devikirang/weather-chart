@@ -15,32 +15,69 @@
   <!-- endbuild -->
 </head>
 <body>
-<!--[if lt IE 7]>
+<!--[if lte IE 8]>
   <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
-
+  
   <!-- Add your site or application content here -->
-  <div id="mainContainer" class="container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="text-center">
-          <h2> Weather Charts from openweathermap.org</h2>
+  <script type="text/x-handlebars">
+    <nav class='navbar navbar-default navbar-static-top' id='main-nav' role='navigation'>
+      <div class='container'>
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class='navbar-header'>
+          <button class='navbar-toggle collapsed' data-target='#main-navbar-collapse-1' data-toggle='collapse' type='button'>
+            <span class='sr-only'>Toggle navigation</span>
+            <span class='icon-bar'/>
+            <span class='icon-bar'/>
+            <span class='icon-bar'/>
+          </button>
+          <span class='navbar-brand'>
+            WeatherApp
+          </span>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class='collapse navbar-collapse' id='main-navbar-collapse-1'>
+          <ul class='nav navbar-nav'>
+            <li>
+              {{#link-to 'chartjs'}}Using Chart.js{{/link-to}}
+            </li>
+            <li>
+              {{#link-to 'd3'}}Using d3.js{{/link-to}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {{outlet}}
+  </script>
+  <script type="text/x-handlebars" data-template-name="search">
+    <div id="commonContainer" class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-sm-offset-3">
+          <div class='text-center'>
+            <h2> Current Weather</h2>
+          </div>
+          <form id="searchForm">
+            <div class="row">
+              <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <div class="input-group">
+                  <span class="input-group-addon" id="cityAddon"><span class="glyphicon glyphicon-globe"></span></span>
+                  <input type="text"  name="cityName" id="inputCityName" class="form-control" placeholder="City name" aria-describedby="cityAddon" required="required">
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <button type="button" {{action 'search'}} class="btn btn-success"><span class="glyphicon glyphicon-search"></span> <span class="hidden-xs"> Search</span></button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-    <form id="searchForm">
-      <div class="row">
-        <div class="col-xs-9 col-sm-6 col-md-3 col-lg-3">
-          <div class="input-group">
-            <span class="input-group-addon" id="cityAddon"><span class="glyphicon glyphicon-globe"></span></span>
-            <input type="text"  name="cityName" id="inputCityName" class="form-control" placeholder="City name" aria-describedby="cityAddon" required="required">
-          </div>
-        </div>
-        <div class="col-xs-3 col-sm-6 col-md-3 col-lg-3">
-          <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span> <span class='hidden-xs'>Search</span></button>
-        </div>
-      </div>
-    </form>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="chartjs">
+    {{view 'search'}}
+    <div id="chartjsContainer" class="container-fluid">
     <div class="row top-buffer">
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="panel panel-danger">
@@ -48,7 +85,7 @@
             <h3 class="panel-title">Temparature</h3>
           </div>
           <div class="panel-body">
-            <canvas id="temparatureChart" width="400" height="400"></canvas>
+            {{ember-chart type='Line' data=temparatureData update=true id='temparatureChart'}}
           </div>
         </div>
       </div>
@@ -58,7 +95,7 @@
             <h3 class="panel-title">Precipitation</h3>
           </div>
           <div class="panel-body">
-            <canvas id="precipitationChart" width="400" height="400"></canvas>
+            {{ember-chart type='Bar' data=precipitationData update=true id='precipitationChart'}}
           </div>
         </div>
       </div>
@@ -70,34 +107,59 @@
             <h3 class="panel-title">Wind</h3>
           </div>
           <div class="panel-body">
-            <canvas id="windChart" width="400" height="400"></canvas>
+            {{ember-chart type='Line' data=windData update=true id='windChart'}}
           </div>
         </div>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="panel panel-warning">
+        <div class="panel panel-success">
           <div class="panel-heading">
             <h3 class="panel-title">Pressure</h3>
           </div>
           <div class="panel-body">
-            <canvas id="pressureChart" width="400" height="400"></canvas>
+            {{ember-chart type='Line' data=pressureData update=true id='pressureChart'}}
           </div>
         </div>
       </div>
     </div>
-  </div>
+    <!-- Test Info below -->
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Label</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each dataset in temparature.datasets}}
+        <tr>
+          <td>{{dataset.label}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="d3">
+    {{view 'search'}}
+    <h4>TODO using d3</h4>
+  </script>
 
   <!-- build:js(.) scripts/vendor.js -->
   <!-- bower:js -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
-  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="bower_components/Chart.js/Chart.min.js"></script>
+  <script src="bower_components/handlebars/handlebars.js"></script>
   <script src="bower_components/lodash/lodash.js"></script>
+  <script src="bower_components/Chart.js/Chart.min.js"></script>
+  <script src="bower_components/d3/d3.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/ember/ember.debug.js"></script>
   <!-- endbower -->
+  <script src="bower_components/ember/ember-template-compiler.js"></script>
   <!-- endbuild -->
 
   <!-- build:js({.tmp,app}) scripts/app.js -->
-  <script src="scripts/weatherApp.js"></script>
+  <script src="scripts/weatherChartJsApp.js"></script>
   <!-- endbuild -->
 </body>
 </html>
