@@ -1,34 +1,4 @@
-window.App = Ember.Application.create();
-
-// Mock Model
-var data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-  {
-    label: 'My First dataset',
-    type: 'line',
-    fillColor: 'rgba(220,220,220,0.2)',
-    strokeColor: 'rgba(220,220,220,1)',
-    pointColor: 'rgba(220,220,220,1)',
-    pointStrokeColor: '#fff',
-    pointHighlightFill: '#fff',
-    pointHighlightStroke: 'rgba(220,220,220,1)',
-    data: [65, 59, 80, 81, 56, 55, 40]
-  },
-  {
-    label: 'My Second dataset',
-    type: 'bar',
-    fillColor: 'rgba(151,187,205,0.2)',
-    strokeColor: 'rgba(151,187,205,1)',
-    pointColor: 'rgba(151,187,205,1)',
-    pointStrokeColor: '#fff',
-    pointHighlightFill: '#fff',
-    pointHighlightStroke: 'rgba(151,187,205,1)',
-    data: [28, 48, 40, 19, 86, 27, 90]
-  }
-  ]
-};
-
+'use strict';
 // Router info
 App.Router.map(function() {
   this.resource('chartjs');
@@ -41,35 +11,25 @@ App.IndexRoute = Ember.Route.extend({
   }
 });
 
-// Define search child view
+// Search MVC
 App.SearchView = Ember.View.extend({
-  templateName: 'search',
-  cityName: 'Dallas, TX'
+  templateName: 'search'
 });
 
-App.ChartjsRoute = Ember.Route.extend({
-  model: function() {
-    return { 
-      'temparatureData': data, 
-      'precipitationData': data,
-      'windData': data,
-      'pressureData': data
-    };
-  }
-});
-
-App.ChartjsController = Ember.ObjectController.extend({
+App.SearchController = Ember.ObjectController.extend({
+  searchText: '',
+  searchCityId: 0,
   actions: {
-    search: function() {
-      console.log('Ajax Search');
-    }
-  }
-});
-
-App.D3Controller = Ember.ObjectController.extend({
-  actions: {
-    search: function() {
-      console.log('D3 Search');
+    searchCity: function() {
+      console.log('search City');
+      var self = this;
+      $.getJSON(urls.get('search') + this.get('searchText')).done(function(data) {
+          self.set('model', data);
+          self.set('model.hasResults', data.count);
+      });
+    },
+    selectCity: function() {
+      console.log('select City');
     }
   }
 });
@@ -88,9 +48,6 @@ App.EmberChartComponent = Ember.Component.extend({
    didInsertElement: function(){
     var canvas  = this.get('element');
     var context = canvas.getContext('2d');
-
-    canvas.width  = $(canvas).parent().width();
-    canvas.height = $(canvas).parent().height()*1.5;
 
     var data = this.get('data');
     var type = this.get('type').charAt(0).toUpperCase() + this.get('type').slice(1);

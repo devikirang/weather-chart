@@ -50,6 +50,7 @@
         </div>
       </div>
     </nav>
+    {{render 'search'}}
     {{outlet}}
   </script>
   <script type="text/x-handlebars" data-template-name="search">
@@ -57,29 +58,60 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-sm-offset-3">
           <div class='text-center'>
-            <h2> Current Weather</h2>
+            <h2>Current Weather</h2>
           </div>
           <form id="searchForm">
             <div class="row">
               <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                 <div class="input-group">
                   <span class="input-group-addon" id="cityAddon"><span class="glyphicon glyphicon-globe"></span></span>
-                  <input type="text"  name="cityName" id="inputCityName" class="form-control" placeholder="City name" aria-describedby="cityAddon" required="required">
+                  {{input type="text"  name="searchText" id="inputSearchCity" class="form-control" placeholder="City name" aria-describedby="cityAddon" required="required" value=searchText autofocus=true}}
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <button type="button" {{action 'search'}} class="btn btn-success"><span class="glyphicon glyphicon-search"></span> <span class="hidden-xs"> Search</span></button>
+                <button type="submit" {{action 'searchCity'}} class="btn btn-success"><span class="glyphicon glyphicon-search"></span>
+                </button>
               </div>
             </div>
           </form>
+          {{#if hasResults}}
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr colspan='2'>
+                  <th colspan='2'>Select City</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each city in list}}
+                <tr>
+                  <td>
+                    <strong><a {{bind-attr href=city.id}}>{{city.name}}, {{city.sys.country}}</a></strong> 
+                    <img src="http://openweathermap.org/images/flags/gb.png">
+                  </td>
+                  <td>
+                    {{#each weather in city.weather}}
+                    <img src="http://openweathermap.org/img/w/icon.png">
+                    <strong><i>{{weather.description}}</i> </strong>
+                    {{/each}}
+                    <p>
+                      <span class="badge badge-info">{{city.main.temp}}°С</span> temperature from {{city.main.temp_min}}°С to {{city.main.temp_max}}°С, wind 2.6m/s. clouds 0%, 1039 hpa
+                    </p>
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+          {{/if}}
         </div>
       </div>
     </div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="chartjs">
-    {{view 'search'}}
     <div id="chartjsContainer" class="container-fluid">
+      <h3>Dummy graphs</h3>
       <div class="row top-buffer">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
           <div class="panel panel-danger">
@@ -151,7 +183,6 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="d3">
-    {{view 'search'}}
     <h4>TODO using d3</h4>
   </script>
 
@@ -169,7 +200,10 @@
   <!-- endbuild -->
 
   <!-- build:js({.tmp,app}) scripts/app.js -->
-  <script src="scripts/weatherChartJsApp.js"></script>
+  <script src="scripts/apiWeather.js"></script>
+  <script src="scripts/appCommon.js"></script>
+  <script src="scripts/chartJsApp.js"></script>
+  <script src="scripts/d3JsApp.js"></script>
   <!-- endbuild -->
 </body>
 </html>

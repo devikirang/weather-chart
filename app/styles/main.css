@@ -1,6 +1,6 @@
 .top-buffer { 
 	margin-top:20px; 
 }
-.active {
+.navbar-nav a.active {
 	font-weight: bold;
 }
