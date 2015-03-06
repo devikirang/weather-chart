@@ -1,12 +1,16 @@
 'use strict';
 
-App.D3Controller = Ember.ObjectController.extend({
-  actions: {
-    searchCity: function() {
-      console.log('search City');
-    },
-    selectCity: function() {
-      console.log('select City');
-    }
+App.D3Route = Ember.Route.extend({
+
+});
+
+App.D3WeatherRoute = Ember.Route.extend({
+  model: function() {
+    return { 
+      'temparatureData': {}, 
+      'precipitationData': {},
+      'windData': {},
+      'pressureData': {}
+    };
   }
 });

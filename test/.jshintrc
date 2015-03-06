@@ -25,7 +25,10 @@
     "_": false,
     "$": false,
     "Ember": false,
-    "Chart": false
+    "Handlebars": false,
+    "Chart": false,
+    "App": true,
+    "URLs": true
   }
 }
 

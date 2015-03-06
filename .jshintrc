@@ -21,7 +21,9 @@
     "_": false,
     "$": false,
     "Ember": false,
+    "Handlebars": false,
     "Chart": false,
-    "App": false
+    "App": true,
+    "URLs": true
   }
 }
