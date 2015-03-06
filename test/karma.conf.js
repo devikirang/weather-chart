@@ -24,7 +24,10 @@ module.exports = function(config) {
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/ember/ember.debug.js',
       // endbower
-      'app/scripts/**/*.js',
+      'app/scripts/openWeather.js',
+      'app/scripts/searchApp.js',
+      'app/scripts/chartJsApp.js',
+      'app/scripts/d3JsApp.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
