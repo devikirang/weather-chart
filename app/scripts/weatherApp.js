@@ -6,16 +6,37 @@ App.OpenWeatherUrlObject = Ember.Object.extend({
 	host: 'http://openweathermap.org',
 	hostApi: 'http://api.openweathermap.org/data/2.5/',
 	key: '1111111111', // Update with your own key
+	units: 'imperial',
 
-	search: function() {
-		var key = this.get('key');
-		return this.get('hostApi') + 'find?units=imperial&type=like' + ( key ? '&APPID=' + key : '') + '&q=';
-	}.property('hostApi', 'key'), 
+	queryData: function(data) {
+		var ret = [];
+		for (var d in data) {
+			ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+		}
+		return ret.join('&');
+	},
 
-	forecast: function() {
-		var key = this.get('key');
-		return this.get('hostApi') + 'forecast?units=imperial' + ( key ? '&APPID=' + key : '') + '&id=';
-	}.property('hostApi', 'key')
+	commonParams: function() {
+		return {'units': this.get('units'), 'APPID': this.get('key')};
+	},
+
+	search: function(searchText) {
+		var data = this.commonParams();
+		data.q = searchText;
+		return this.get('hostApi') + 'find?'+ this.queryData(data);
+	}, 
+
+	cityId: function(id) {
+		var data = this.commonParams();
+		data.id = id;
+		return this.get('hostApi') + 'weather?' + this.queryData(data);
+	},
+
+	forecast: function(id) {
+		var data = this.commonParams();
+		data.id = id;
+		return this.get('hostApi') + 'forecast?' + this.queryData(data);
+	}
 });
 
 var URLs = App.OpenWeatherUrlObject.create();

@@ -24,7 +24,7 @@ App.SearchController = Ember.ObjectController.extend({
   actions: {
     searchCity: function() {
       var self = this;
-      $.getJSON(URLs.get('search') + this.get('searchText')).done(function(data) {
+      $.getJSON(URLs.search(this.get('searchText'))).done(function(data) {
           self.set('model', data);
           self.set('model.hasResults', data.count);
           self.set('model.selectedCity', {});
