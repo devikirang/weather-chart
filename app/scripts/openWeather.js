@@ -5,10 +5,12 @@ var App = Ember.Application.create();
 App.OpenWeatherUrlObject = Ember.Object.extend({
 	host: 'http://openweathermap.org',
 	hostApi: 'http://api.openweathermap.org/data/2.5/',
+	key: '1111111111', // Update with your own key
 
 	search: function() {
-		return this.get('hostApi') + 'find?units=metric&type=like&q=';
-	}.property('hostApi')
+		var key = this.get('key');
+		return this.get('hostApi') + 'find?units=imperial&type=like' + ( key ? '&APPID=' + key : '') + '&q=';
+	}.property('hostApi', 'key')
 });
 
 var URLs = App.OpenWeatherUrlObject.create();

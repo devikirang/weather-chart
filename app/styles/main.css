@@ -4,3 +4,6 @@
 .navbar-nav a.active {
 	font-weight: bold;
 }
+.city-link:focus, .city-link:hover {
+	text-decoration: none;
+}
