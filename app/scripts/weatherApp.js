@@ -10,6 +10,11 @@ App.OpenWeatherUrlObject = Ember.Object.extend({
 	search: function() {
 		var key = this.get('key');
 		return this.get('hostApi') + 'find?units=imperial&type=like' + ( key ? '&APPID=' + key : '') + '&q=';
+	}.property('hostApi', 'key'), 
+
+	forecast: function() {
+		var key = this.get('key');
+		return this.get('hostApi') + 'forecast?units=imperial' + ( key ? '&APPID=' + key : '') + '&id=';
 	}.property('hostApi', 'key')
 });
 

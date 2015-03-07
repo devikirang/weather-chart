@@ -19,20 +19,30 @@ App.IndexRoute = Ember.Route.extend({
 App.SearchController = Ember.ObjectController.extend({
   searchText: '',
   model: {},
+  isCitySelected: false,
+  isCitySearching: false,
   actions: {
     searchCity: function() {
       var self = this;
       $.getJSON(URLs.get('search') + this.get('searchText')).done(function(data) {
           self.set('model', data);
           self.set('model.hasResults', data.count);
+          self.set('model.selectedCity', {});
+          self.set('isCitySearching', true);
+          self.set('isCitySelected', false);
           if(data.count === 1) {
-             self.send('selectCity', data.list[0].id);
+             self.send('selectCity', data.list[0]); // Send the first city.
           }
       });
     },
-    selectCity: function(cityId) {
+    selectCity: function(city) {
+      // Update City Selection.
+      this.set('isCitySearching', false);
+      this.set('isCitySelected', true);
+      this.set('searchText', [city.name, city.sys.country].join(',') );
+      this.set('model.selectedCity', city);
       var route = this.parentController.currentRouteName.split('.')[0].concat('.weather');
-      this.transitionToRoute(route, cityId);
+      this.transitionToRoute(route, city.id);
     }
   }
 });
