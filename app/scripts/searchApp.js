@@ -18,22 +18,29 @@ App.IndexRoute = Ember.Route.extend({
 // Search MVC
 App.SearchController = Ember.ObjectController.extend({
   searchText: '',
-  model: {},
+  model: {
+    results: []
+  },
   isCitySelected: false,
   isCitySearching: false,
   actions: {
     searchCity: function() {
       var self = this;
       $.getJSON(URLs.search(this.get('searchText'))).done(function(data) {
-          self.set('model', data);
-          self.set('model.hasResults', data.count);
-          self.set('model.selectedCity', {});
-          self.set('isCitySearching', true);
-          self.set('isCitySelected', false);
-          if(data.count === 1) {
+        self.set('model', data);
+        self.set('model.hasResults', data.count);
+        self.set('model.selectedCity', {});
+        self.set('isCitySearching', true);
+        self.set('isCitySelected', false);
+        if(data.count === 1) {
              self.send('selectCity', data.list[0]); // Send the first city.
+           } else {
+            var currentRouteName = self.parentController.currentRouteName;
+            if (!_.endsWith(currentRouteName, '.index')) {
+              self.transitionToRoute(self.parentController.currentRouteName.split('.')[0].concat('.index'));
+            }
           }
-      });
+        });
     },
     selectCity: function(city) {
       // Update City Selection.
