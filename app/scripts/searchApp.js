@@ -2,10 +2,10 @@
 // Router info
 App.Router.map(function() {
   this.resource('chartjs', function(){
-    this.route('weather', {path: 'weather/:cityId'});
+    this.route('weather', {path: 'weather/:address'});
   });
   this.resource('d3', function(){
-    this.route('weather', {path: 'weather/:cityId'});
+    this.route('weather', {path: 'weather/:address'});
   });
 });
 
@@ -18,38 +18,52 @@ App.IndexRoute = Ember.Route.extend({
 // Search MVC
 App.SearchController = Ember.ObjectController.extend({
   searchText: '',
-  model: {
-    results: []
-  },
   isCitySelected: false,
   isCitySearching: false,
+
+  model: {
+    geoResults: {},
+    hasResults: false,
+    selectedCity: {}
+  },
+  
   actions: {
     searchCity: function() {
       var self = this;
-      $.getJSON(URLs.search(this.get('searchText'))).done(function(data) {
-        self.set('model', data);
-        self.set('model.hasResults', data.count);
-        self.set('model.selectedCity', {});
-        self.set('isCitySearching', true);
-        self.set('isCitySelected', false);
-        if(data.count === 1) {
-             self.send('selectCity', data.list[0]); // Send the first city.
+      var geocoder =  new google.maps.Geocoder();
+      geocoder.geocode( { 'address': this.get('searchText')}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          self.set('isCitySearching', true);
+          self.set('isCitySelected', false);
+
+          self.set('model.geoResults', results);
+          self.set('model.hasResults', results.length > 0);
+          self.set('model.selectedCity', {});
+          
+          if(results.length === 1) {
+             self.send('selectCity', results[0]); // Send the first city.
            } else {
             var currentRouteName = self.parentController.currentRouteName;
             if (!_.endsWith(currentRouteName, '.index')) {
               self.transitionToRoute(self.parentController.currentRouteName.split('.')[0].concat('.index'));
             }
           }
-        });
+        }
+      });
     },
-    selectCity: function(city) {
+    selectCity: function(geoLoc) {
       // Update City Selection.
-      this.set('isCitySearching', false);
-      this.set('isCitySelected', true);
-      this.set('searchText', [city.name, city.sys.country].join(',') );
-      this.set('model.selectedCity', city);
-      var route = this.parentController.currentRouteName.split('.')[0].concat('.weather');
-      this.transitionToRoute(route, city.id);
+      /*jshint camelcase: false */
+      var self = this;
+      $.getJSON(URLs.geoLocation(geoLoc.geometry.location.lat(), geoLoc.geometry.location.lng())).done(function(data) {
+        self.set('isCitySearching', false);
+        self.set('isCitySelected', true);      
+        self.set('searchText', geoLoc.formatted_address);
+        self.set('model.selectedCity', data);
+
+        var route = self.parentController.currentRouteName.split('.')[0].concat('.weather');
+        self.transitionToRoute(route, geoLoc.formatted_address);
+      });
     }
   }
 });

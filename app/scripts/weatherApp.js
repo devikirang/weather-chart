@@ -32,7 +32,7 @@ App.OpenWeatherUrlObject = Ember.Object.extend({
 		return this.get('hostApi') + '/weather?' + this.queryData(data);
 	},
 
-	location: function(lat, lon) {
+	geoLocation: function(lat, lon) {
 		var data = this.commonParams();
 		data.lat = lat;
 		data.lon = lon;

@@ -27,6 +27,7 @@
     "Ember": false,
     "Handlebars": false,
     "Chart": false,
+    "google": false,
     "App": true,
     "URLs": true
   }
