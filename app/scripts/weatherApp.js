@@ -39,9 +39,10 @@ App.OpenWeatherUrlObject = Ember.Object.extend({
 		return this.get('hostApi') + '/weather?' + this.queryData(data);
 	},
 
-	forecast: function(id) {
+	forecast: function(lat, lon) {
 		var data = this.commonParams();
-		data.id = id;
+		data.lat = lat;
+		data.lon = lon;
 		return this.get('hostApi') + '/forecast?' + this.queryData(data);
 	},
 	map: function(lat, lon) {
@@ -66,7 +67,7 @@ Ember.Handlebars.helper('img-weather', function(icon) {
 	return new Ember.Handlebars.SafeString('<img src="'+ URLs.get('host') +'/img/w/'+ escaped +'.png">');
 });
 
-Ember.Handlebars.helper('weather-map', function(lat, lon) {
-	return new Ember.Handlebars.SafeString('<a class="btn btn-link" target="_blank" href="'+ URLs.map(lat, lon) + 
-		'"><span class="glyphicon glyphicon-new-window"></span> Map</a>');
+Ember.Handlebars.helper('weather-map', function(city) {
+	var hrefUrl = 'http://www.msn.com/en-us/weather/fullscreenmaps/' + _.words(city.address)[0] + '/we-city-' + city.coord.lat + ',' + city.coord.lon + '?maptype=temperature';
+	return new Ember.Handlebars.SafeString('<a class="btn btn-info" target="_blank" href="'+ hrefUrl + '"><span class="glyphicon glyphicon-new-window"></span> Map</a>');
 });

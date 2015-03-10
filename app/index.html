@@ -18,188 +18,147 @@
 </head>
 <body>
 <!--[if lte IE 8]>
-  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-  <![endif]-->
-  
-  <!-- Add your site or application content here -->
-  <script type="text/x-handlebars">
-    <nav class='navbar navbar-default navbar-static-top' id='main-nav' role='navigation'>
-      <div class='container'>
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class='navbar-header'>
-          <button class='navbar-toggle collapsed' data-target='#main-navbar-collapse-1' data-toggle='collapse' type='button'>
-            <span class='sr-only'>Toggle navigation</span>
-            <span class='icon-bar'/>
-            <span class='icon-bar'/>
-            <span class='icon-bar'/>
-          </button>
-          <span class='navbar-brand'>
-            WeatherApp
-          </span>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class='collapse navbar-collapse' id='main-navbar-collapse-1'>
-          <ul class='nav navbar-nav'>
-            <li>
-              {{#link-to 'chartjs'}}Using Chart.js{{/link-to}}
-            </li>
-            <li>
-              {{#link-to 'd3'}}Using d3.js{{/link-to}}
-            </li>
-          </ul>
-        </div>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+<script type="text/x-handlebars" data-template-name="index">
+  <nav class='navbar navbar-default navbar-static-top' id='main-nav' role='navigation'>
+    <div class='container'>
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class='navbar-header'>
+        <button class='navbar-toggle collapsed' data-target='#main-navbar-collapse-1' data-toggle='collapse' type='button'>
+          <span class='sr-only'>Toggle navigation</span>
+          <span class='icon-bar'/>
+          <span class='icon-bar'/>
+          <span class='icon-bar'/>
+        </button>
+        <span class='navbar-brand'>
+          {{#link-to 'index'}}WeatherApp{{/link-to}}
+        </span>
       </div>
-    </nav>
-    {{render 'search'}}
-    {{outlet}}
-  </script>
-
-  <script type="text/x-handlebars" data-template-name="search">
-    <div id="commonContainer" class="container">
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-sm-offset-3">
-          <div class='text-center'>
-            <h2>Current Weather</h2>
-          </div>
-          <form id="searchForm">
-            <div class="row">
-              <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                <div class="input-group">
-                  <span class="input-group-addon" id="cityAddon"><span class="glyphicon glyphicon-globe"></span></span>
-                  {{input type="text"  name="searchText" id="inputSearchCity" class="form-control" placeholder="City name / ZIP code" aria-describedby="cityAddon" required="required" value=searchText autofocus=true}}
-                </div>
-              </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <button type="submit" {{action 'searchCity'}} class="btn btn-success"><span class="glyphicon glyphicon-search"></span>
-                </button>
-              </div>
-            </div>            
-          </form>
-        </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class='collapse navbar-collapse' id='main-navbar-collapse-1'>
+        <ul class='nav navbar-nav'>
+          <li>
+            <a href="http://www.chartjs.org/" target="_blank">Chart.js <span class="glyphicon glyphicon-new-window"></span></a>
+          </li>
+          <li>
+            <a href="http://d3js.org/" target="_blank">D3.js <span class="glyphicon glyphicon-new-window"></span></a>
+          </li>
+          <li>
+            <a href="http://emberjs.com/" target="_blank">ember.js <span class="glyphicon glyphicon-new-window"></span></a>
+          </li>
+          <li>
+            <a href="http://getbootstrap.com/" target="_blank">Bootstrap <span class="glyphicon glyphicon-new-window"></span></a>
+          </li>
+        </ul>
       </div>
+    </div>
+  </nav>
+  <div id="searchContainer" class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-sm-offset-3">
+        <div class='text-center'>
+          <h3>Weather details</h3>
+        </div>
+        <form id="searchForm">
+          <div class="row">
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+              <div class="input-group">
+                <span class="input-group-addon" id="cityAddon"><span class="glyphicon glyphicon-globe"></span></span>
+                {{input type="text"  name="searchText" id="inputSearchCity" class="form-control" placeholder="City name / ZIP code" aria-describedby="cityAddon" required="required" value=searchText autofocus=true}}
+              </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <button type="submit" {{action 'searchCity'}} class="btn btn-success"><span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </div>            
+        </form>
+      </div>
+    </div>
+  </div>
+  {{#if isCitySearch}}
+  {{partial 'cities'}}
+  {{/if}}
+  {{#if isCitySelected}}
+  {{partial 'city'}}
+  {{/if}}
+  {{outlet}}
+</script>
 
-      {{#if isCitySelected}}
-      <div class="row">
-      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2">
-        <div class="well well-sm top-buffer text-center">
-          <strong>
-            {{selectedCity.name}}, {{selectedCity.sys.country}}         
-          </strong>
-          {{img-flag selectedCity.sys.country}}
-          <span>
-            {{#each weather in selectedCity.weather}}
-            {{img-weather weather.icon}}
-            <strong><i>{{weather.description}}</i> </strong>
-            {{/each}}
-          </span>
-          <p>
-            <span class="badge badge-info">{{selectedCity.main.temp}}°F</span> temperature from {{selectedCity.main.temp_min}}°F to {{selectedCity.main.temp_max}}°F
-            {{weather-map selectedCity.coord.lat selectedCity.coord.lon}}
-          </p>
-          <p>
-           <span> Wind {{selectedCity.wind.speed}}m/s, Clouds {{selectedCity.clouds.all}}%, Pressure {{selectedCity.main.pressure}} hpa </span>
-         </p>
-       </div>
-     </div>
-   </div>
-   {{/if}}
-
-   {{#if isCitySearching}}
-   <div {{bind-attr class='isCitySelected:hidden'}}>
+<script type="text/x-handlebars" data-template-name="cities">
+  <div id="searchResultsContainer" class="container top-buffer">
     <div class="row">
      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1">
       {{#if hasResults}}
-        <div class='text-center'>
-            <h5><strong>Select a City</strong>:</h5>
-        </div>
+      <div class='text-center'>
+        <strong>Select a City :</strong>
+      </div>
       <div class="row">
-        {{#each geoLoc in geoResults}}
+        {{#each city in geoResults}}
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
-            <button type="button" {{action 'selectCity' geoLoc}} class="btn btn-link city-link"><strong>{{geoLoc.formatted_address}}</strong></button>
+          <button type="button" {{action 'selectCity' city}} class="btn btn-link city-link"> <strong>{{city.address}}</strong> </button>
         </div>
         {{/each}}
       </div>
       {{else}}
-      <div class='text-center top-buffer'><strong>No Search Results found.</strong></div>
+      <div class='text-center'>
+        <strong>No Search Results found.</strong>
+      </div>
       {{/if}}
     </div>
   </div>
-
-</div>
-{{/if}}
 </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="chartjs/weather">
-  <h4>TODO using chartjs</h4>
+<script type="text/x-handlebars" data-template-name="city">
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2">
+      <div class="well well-sm top-buffer text-center">
+        <div>
+          <strong>{{city.address}}</strong>
+        </div>
+        <div>
+          {{#each weather in city.weather}}
+          <span>
+            {{img-weather weather.icon}}
+            <strong><i>{{weather.description}}</i> </strong>
+          </span>
+          {{/each}}
+          {{weather-map city}}
+        </div>
+        <p>
+          <span class="badge badge-info">{{city.main.temp}}°F</span> temperature from {{city.main.temp_min}}°F to {{city.main.temp_max}}°F
+        </p>
+        <p>
+          Wind {{city.wind.speed}}m/s, Clouds {{city.clouds.all}}%, Pressure {{city.main.pressure}} hpa 
+        </p>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="chartjs">
   <div id="chartjsContainer" class="container-fluid">
     <div class="row top-buffer">
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="panel panel-danger">
-          <div class="panel-heading">
-            <h3 class="panel-title">Temparature</h3>
+          <div class="panel-heading text-center">
+            <h3 class="panel-title">Hourly Current Weather</h3>
           </div>
           <div class="panel-body">
+            {{#each weatherChart in weatherCharts}}
+            {{weatherChart.type}}
             <div class='chart'>
-              {{ember-chart type='Line' data=temparatureData update=true id='temparatureChart'}}
+              {{ember-chart type=weatherChart.type data=weatherChart.data update=true}}
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">Precipitation</h3>
-          </div>
-          <div class="panel-body">
-            <div class='chart'>
-              {{ember-chart type='Bar' data=precipitationData update=true id='precipitationChart'}}
-            </div>
+            {{/each}}
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title">Wind</h3>
-          </div>
-          <div class="panel-body">
-            <div class='chart'>
-              {{ember-chart type='Line' data=windData update=true id='windChart'}}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="panel panel-success">
-          <div class="panel-heading">
-            <h3 class="panel-title">Pressure</h3>
-          </div>
-          <div class="panel-body">
-            <div class='chart'>
-              {{ember-chart type='Line' data=pressureData update=true id='pressureChart'}}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Test Info below -->
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Label</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each dataset in temparature.datasets}}
-        <tr>
-          <td>{{dataset.label}}</td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
   </div>
 </script>
 
@@ -210,15 +169,16 @@
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/handlebars/handlebars.js"></script>
 <script src="bower_components/lodash/lodash.js"></script>
+<script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/Chart.js/Chart.min.js"></script>
 <script src="bower_components/d3/d3.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/handlebars/handlebars.js"></script>
 <script src="bower_components/ember/ember.debug.js"></script>
 <!-- endbower -->
 <script src="bower_components/ember/ember-template-compiler.js"></script>
-<script src="//maps.googleapis.com/maps/api/js?key=YOUR_KEY"></script>
+<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBTKL2e29J-u0OdxRgEQpDq2j4OZioyCGs"></script>
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/app.js -->
