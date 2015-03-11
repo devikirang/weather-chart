@@ -44,13 +44,16 @@
             <a href="http://www.chartjs.org/" target="_blank">Chart.js <span class="glyphicon glyphicon-new-window"></span></a>
           </li>
           <li>
-            <a href="http://d3js.org/" target="_blank">D3.js <span class="glyphicon glyphicon-new-window"></span></a>
-          </li>
-          <li>
             <a href="http://emberjs.com/" target="_blank">ember.js <span class="glyphicon glyphicon-new-window"></span></a>
           </li>
           <li>
             <a href="http://getbootstrap.com/" target="_blank">Bootstrap <span class="glyphicon glyphicon-new-window"></span></a>
+          </li>
+          <li>
+            <a href="https://lodash.com/" target="_blank">lodash.js <span class="glyphicon glyphicon-new-window"></span></a>
+          </li>
+          <li>
+            <a href="http://momentjs.com/" target="_blank">Moment.js <span class="glyphicon glyphicon-new-window"></span></a>
           </li>
         </ul>
       </div>
@@ -63,7 +66,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-sm-offset-3">
         <div class='text-center'>
-          <h3>Weather details</h3>
+          <h3>Weather Current</h3>
         </div>
         <form id="searchForm">
           <div class="row">
@@ -85,6 +88,7 @@
   {{#if isCitySearch}}
   {{partial 'cities'}}
   {{/if}}
+  {{outlet}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="cities">
@@ -112,7 +116,7 @@
 </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="city">
+<script type="text/x-handlebars" data-template-name="weather/city">
   <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2">
       <div class="well well-sm top-buffer text-center">
@@ -126,7 +130,7 @@
             <strong><i>{{weather.description}}</i> </strong>
           </span>
           {{/each}}
-          {{weather-map wCityData}}
+          {{weather-map model}}
         </div>
         <p>
           <span class="badge badge-info">{{wCityData.main.temp}}°F</span> temperature from {{wCityData.main.temp_min}}°F to {{wCityData.main.temp_max}}°F
@@ -134,22 +138,20 @@
         <p>
           Wind {{wCityData.wind.speed}}m/s, Clouds {{wCityData.clouds.all}}%, Pressure {{wCityData.main.pressure}} hpa 
         </p>
+        <button type="button" {{action 'showCharts' wCityData}} class="btn btn-primary">Show/Update Charts</button>
       </div>
     </div>
   </div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="chartjs">
+  {{#if isShowCharts}}
   <div id="chartjsContainer" class="container-fluid">
     <div class="row top-buffer">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="panel panel-danger">
           <div class="panel-heading text-center">
-            <h3 class="panel-title">Hourly Current Weather</h3>
+            <h3 class="panel-title">Hourly Weather Forecast</h3>
           </div>
           <div class="panel-body">
             {{#each weatherChart in weatherCharts}}
-            {{weatherChart.type}}
             <div class='chart'>
               {{ember-chart type=weatherChart.type data=weatherChart.data update=true}}
             </div>
@@ -159,10 +161,7 @@
       </div>
     </div>
   </div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="d3">
-  <h4>TODO using d3</h4>
+  {{/if}}
 </script>
 
 <!-- build:js(.) scripts/vendor.js -->
@@ -184,7 +183,6 @@
 <script src="scripts/weatherApp.js"></script>
 <script src="scripts/searchApp.js"></script>
 <script src="scripts/chartJsApp.js"></script>
-<script src="scripts/d3JsApp.js"></script>
 <!-- endbuild -->
 </body>
 </html>

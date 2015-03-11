@@ -1,10 +1,8 @@
 'use strict';
 // Router info
 App.Router.map(function() {
-  this.route('weather');
-  this.route('city', {path: 'city/:faddress/:lat/:lon'}, function() {
-    this.route('chartjs');
-    this.route('d3');
+  this.route('weather', function(){
+    this.route('city', {path: 'city/:faddress/:lat/:lon'});
   });
 });
 
@@ -36,7 +34,12 @@ App.WeatherController = Ember.ObjectController.extend({
           if (status === google.maps.GeocoderStatus.OK) {
             var geoResults = _.map(resultsData, function(result) { 
               /*jshint camelcase: false */
-              return { 'daddress': result.formatted_address,  'faddress' : result.formatted_address.replace(/\s+/g, '-'), 'lat': result.geometry.location.lat(), 'lon': result.geometry.location.lng() }
+              return { 
+                'daddress': result.formatted_address,  
+                'faddress' : result.formatted_address.replace(/\s+/g, '-'), 
+                'lat': result.geometry.location.lat(), 
+                'lon': result.geometry.location.lng() 
+              };
             });
 
             if(geoResults.length === 1) {
@@ -65,18 +68,8 @@ App.WeatherController = Ember.ObjectController.extend({
         geoCity.wCityData = data;
         SelectedCity = geoCity;
 
-        self.transitionToRoute('city', geoCity);
+        self.transitionToRoute('weather.city', geoCity);
       });
     }
-  }
-});
-
-App.CityRoute = Ember.Route.extend({
-
-});
-
-App.CityController = Ember.ObjectController.extend({
-  actions: {
-
   }
 });

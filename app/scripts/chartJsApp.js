@@ -1,66 +1,4 @@
 'use strict';
-App.ChartjsWeatherController = Ember.ObjectController.extend({
-  actions: {
-    updateCharts: function(selectedCity) {
-      var temparatureChart = { 
-        type: 'Line',
-        data: {
-          labels: [],
-          datasets: [
-          {
-            label: "Temparature",
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: []
-          },
-          {
-            label: "Max Temparature",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: []
-          }
-          ]
-        }
-      };
-
-      var pressureChart = { 
-        type: 'Bar',
-        data: {
-          labels: [],
-          datasets: [{
-            label: 'Pressure',
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: []
-          }]
-        }
-      };
-      var self = this;
-      $.getJSON(URLs.forecast(selectedCity.coord.lat, selectedCity.coord.lon), function(data) {
-        var charts = [];
-        temparatureChart.data.labels = _.map(_.pluck(data.list, 'dt_txt'), function(dtTxt) {
-          return moment(dtTxt, 'YYYY-MM-DD h:mm:ss').format('ddd h:mm a');
-        });
-        temparatureChart.data.datasets[0].data = _.map(_.map(data.list, 'main'), 'temp');
-        temparatureChart.data.datasets[1].data = _.map(_.map(data.list, 'main'), 'temp_max');
-        charts.push(temparatureChart);
-        self.set('model.weatherCharts', charts);
-      }); 
-    }
-  }
-});
 
 // Chart component
 App.EmberChartComponent = Ember.Component.extend({
@@ -121,3 +59,69 @@ App.EmberChartComponent = Ember.Component.extend({
 
 // Chartjs settings
 Chart.defaults.global.responsive = true;
+
+// MVC
+App.WeatherCityController = Ember.ObjectController.extend({
+  isShowCharts: false,  
+  actions: {
+    showCharts: function(wCityData) {
+      var temparatureChart = { 
+        type: 'Line',
+        data: {
+          labels: [],
+          datasets: [
+          {
+            label: 'Max Temparature',
+            fillColor: 'rgba(220,220,220,0.2)',
+            strokeColor: 'rgba(220,220,220,1)',
+            pointColor: 'rgba(220,220,220,1)',
+            pointStrokeColor: '#fff',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data: []
+          },
+          {
+            label: 'Temparature',
+            fillColor: 'rgba(151,187,205,0.2)',
+            strokeColor: 'rgba(151,187,205,1)',
+            pointColor: 'rgba(151,187,205,1)',
+            pointStrokeColor: '#fff',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(151,187,205,1)',
+            data: []
+          }
+          ]
+        }
+      };
+
+      var pressureChart = { 
+        type: 'Bar',
+        data: {
+          labels: [],
+          datasets: [{
+            label: 'Pressure',
+            fillColor: 'rgba(151,187,205,0.2)',
+            strokeColor: 'rgba(151,187,205,1)',
+            pointColor: 'rgba(151,187,205,1)',
+            pointStrokeColor: '#fff',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(151,187,205,1)',
+            data: []
+          }]
+        }
+      };
+      var self = this;
+      $.getJSON(URLs.forecast(wCityData.coord.lat, wCityData.coord.lon), function(data) {
+        var charts = [];
+        temparatureChart.data.labels = _.map(_.pluck(data.list, 'dt_txt'), function(dtTxt) {
+          return moment(dtTxt, 'YYYY-MM-DD h:mm:ss').format('ddd h:mm a');
+        });
+        temparatureChart.data.datasets[0].data = _.map(_.map(data.list, 'main'), 'temp_max');
+        temparatureChart.data.datasets[1].data = _.map(_.map(data.list, 'main'), 'temp');
+        charts.push(temparatureChart);
+        self.set('isShowCharts', true);
+        self.set('model.weatherCharts', charts);
+      }); 
+    }
+  }
+});
