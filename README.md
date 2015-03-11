@@ -6,8 +6,10 @@ Note :  **In Progress**
 
 Run the below commands to download required dependencies.
 
-* `npm install`  - to download the node modules to `node_modules` folder.
-* `bower install` - to download the bower components to `bower_components` folder.
+* `npm install -g bower`
+* `npm install -g grunt-cli`
+* `npm install`  - for `node_modules`
+* `bower install` - for `bower_components`
 
 ## _Build & development_
 

@@ -68,6 +68,6 @@ Ember.Handlebars.helper('img-weather', function(icon) {
 });
 
 Ember.Handlebars.helper('weather-map', function(city) {
-	var hrefUrl = 'http://www.msn.com/en-us/weather/fullscreenmaps/' + _.words(city.address)[0] + '/we-city-' + city.coord.lat + ',' + city.coord.lon + '?maptype=temperature';
+	var hrefUrl = 'http://www.msn.com/en-us/weather/fullscreenmaps/' + _.words(city.daddress)[0] + '/we-city-' + city.coord.lat + ',' + city.coord.lon + '?maptype=temperature';
 	return new Ember.Handlebars.SafeString('<a class="btn btn-info" target="_blank" href="'+ hrefUrl + '"><span class="glyphicon glyphicon-new-window"></span> Map</a>');
 });

@@ -1,16 +1,26 @@
 'use strict';
 // Router info
 App.Router.map(function() {
-  this.route('city', {path: 'city/:city_faddress/:city_coord_lat/:city_coord_lon'}, function() {
+  this.route('weather');
+  this.route('city', {path: 'city/:faddress/:lat/:lon'}, function() {
     this.route('chartjs');
     this.route('d3');
   });
 });
 
+var SelectedCity = {};
+
 //MVC
-App.IndexController = Ember.ObjectController.extend({
+App.IndexRoute = Ember.Route.extend({
+  beforeModel: function() {
+    this.transitionTo('weather');
+  }
+});
+
+App.WeatherController = Ember.ObjectController.extend({
   searchText: '',
   isCitySearch: false,
+  isCitySelected: false,
   model: {
     geoResults: [],
     hasResults: false,
@@ -26,13 +36,14 @@ App.IndexController = Ember.ObjectController.extend({
           if (status === google.maps.GeocoderStatus.OK) {
             var geoResults = _.map(resultsData, function(result) { 
               /*jshint camelcase: false */
-              return { 'address': result.formatted_address, 'lat': result.geometry.location.lat(), 'lon': result.geometry.location.lng() }
+              return { 'daddress': result.formatted_address,  'faddress' : result.formatted_address.replace(/\s+/g, '-'), 'lat': result.geometry.location.lat(), 'lon': result.geometry.location.lng() }
             });
 
             if(geoResults.length === 1) {
               self.send('selectCity', geoResults[0]); // Send the first city.
             } else {
               self.set('isCitySearch', true);
+              self.set('isCitySelected', false);
               self.set('model.geoResults', geoResults);
               self.set('model.hasResults', (geoResults.length > 0));
             }
@@ -40,43 +51,31 @@ App.IndexController = Ember.ObjectController.extend({
         });
       } else {
         this.set('isCitySearch', true);
+        this.set('isCitySelected', false);
         this.set('model.geoResults', []);
         this.set('model.hasResults', false);
       }
     },
-    selectCity: function(city) {
+    selectCity: function(geoCity) {
       // Update City Selection.
       var self = this;
-      $.getJSON(URLs.geoLocation(city.lat, city.lon)).done(function(data) {
+      $.getJSON(URLs.geoLocation(geoCity.lat, geoCity.lon)).done(function(data) {
         self.set('isCitySearch', false);
         self.set('isCitySelected', true);
+        geoCity.wCityData = data;
+        SelectedCity = geoCity;
 
-        self.set('searchText', city.address);
-        data.address = city.address;
-        data.faddress = city.address.replace(/\s+/g, '-');
-
-        self.set('model.city', data);
-        //self.transitionToRoute('city', data); TODO
+        self.transitionToRoute('city', geoCity);
       });
     }
   }
 });
 
-App.CityRoute = Ember.Route.extend({ 
-  model: function (params){
-    console.log('selected city model', params);
-    return {
-      'city': {
-        'address': params.faddress,
-        'lat': params.lat,
-        'lon': params.lon
-      }
-    }
-  }
+App.CityRoute = Ember.Route.extend({
+
 });
 
 App.CityController = Ember.ObjectController.extend({
-  needs:['index'],
   actions: {
 
   }
