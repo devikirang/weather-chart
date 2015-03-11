@@ -20,7 +20,6 @@ module.exports = function(config) {
       'bower_components/lodash/lodash.js',
       'bower_components/moment/moment.js',
       'bower_components/Chart.js/Chart.min.js',
-      'bower_components/d3/d3.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/handlebars/handlebars.js',
       'bower_components/ember/ember.debug.js',
