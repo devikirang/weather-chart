@@ -1,11 +1,14 @@
 #weather-chartjs
 
 Note :  **In Progress**
+* Done with Temparature Charts.
+* Other charts in progress.
 
 ## _Software Installation_
 
 Run the below commands to download required dependencies.
 
+* Install node.js
 * `npm install -g bower`
 * `npm install -g grunt-cli`
 * `npm install`  - for `node_modules`
