@@ -62,7 +62,10 @@ Chart.defaults.global.responsive = true;
 
 // MVC
 App.WeatherCityController = Ember.ObjectController.extend({
-  isShowCharts: false,  
+  isShowCharts: false,
+  model: {
+    weatherCharts: []
+  },  
   actions: {
     showUpdateCharts: function(wCityData) {
       var temparatureChart = { 
@@ -141,7 +144,7 @@ App.WeatherCityController = Ember.ObjectController.extend({
         var charts = [];
         charts.push(temparatureChart);
         charts.push(pressureChart);
-        self.set('isShowCharts', true);
+        self.set('isShowCharts', charts.length > 0);
         self.set('model.weatherCharts', charts);
       }); 
     }
