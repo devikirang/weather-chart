@@ -64,7 +64,7 @@ Chart.defaults.global.responsive = true;
 App.WeatherCityController = Ember.ObjectController.extend({
   isShowCharts: false,  
   actions: {
-    showCharts: function(wCityData) {
+    showUpdateCharts: function(wCityData) {
       var temparatureChart = { 
         type: 'Line',
         data: {
@@ -111,10 +111,18 @@ App.WeatherCityController = Ember.ObjectController.extend({
         }
       };
       var self = this;
+      var previousWeekDay = '';
       $.getJSON(URLs.forecast(wCityData.coord.lat, wCityData.coord.lon), function(data) {
         var charts = [];
         temparatureChart.data.labels = _.map(_.pluck(data.list, 'dt_txt'), function(dtTxt) {
-          return moment(dtTxt, 'YYYY-MM-DD h:mm:ss').format('ddd h:mm a');
+          var date = moment(dtTxt, 'YYYY-MM-DD h:mm:ss'),
+          currentWeekDay = date.format('ddd');
+          if (previousWeekDay === currentWeekDay) {
+            return date.format('ha');
+          } else {
+            previousWeekDay = currentWeekDay;
+            return date.format('Do ddd ha');
+          }
         });
         temparatureChart.data.datasets[0].data = _.map(_.map(data.list, 'main'), 'temp_max');
         temparatureChart.data.datasets[1].data = _.map(_.map(data.list, 'main'), 'temp');

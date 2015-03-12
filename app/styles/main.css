@@ -7,3 +7,6 @@
 .city-link:focus, .city-link:hover {
 	text-decoration: none;
 }
+.img-thumbnail.weather-icon {
+	background: #DFF0D8;
+}

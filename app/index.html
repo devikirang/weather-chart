@@ -66,31 +66,36 @@
 </script>
 <script type="text/x-handlebars" data-template-name="weather">
   <div id="searchContainer" class="container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-sm-offset-3">
-        <div class='text-center'>
-          <h3>Weather Current</h3>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><strong>City Weather Search</strong></h3>
+      </div>
+      <div class="panel-body">
+        <div class="row text-center">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-sm-offset-3">
+            <form id="searchForm">
+              <div class="row">
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                  <div class="input-group">
+                    <span class="input-group-addon" id="cityAddon"><span class="glyphicon glyphicon-globe"></span></span>
+                    {{input type="text"  name="searchText" id="inputSearchCity" class="form-control" placeholder="City name / ZIP code" aria-describedby="cityAddon" required="required" value=searchText autofocus=true}}
+                  </div>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                  <button type="submit" {{action 'searchCity'}} class="btn btn-success">
+                    <span class="glyphicon glyphicon-search"></span> <span class="hidden-xs">Search</span>
+                  </button>
+                </div>
+              </div>            
+            </form>
+          </div>
         </div>
-        <form id="searchForm">
-          <div class="row">
-            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-              <div class="input-group">
-                <span class="input-group-addon" id="cityAddon"><span class="glyphicon glyphicon-globe"></span></span>
-                {{input type="text"  name="searchText" id="inputSearchCity" class="form-control" placeholder="City name / ZIP code" aria-describedby="cityAddon" required="required" value=searchText autofocus=true}}
-              </div>
-            </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-              <button type="submit" {{action 'searchCity'}} class="btn btn-success"><span class="glyphicon glyphicon-search"></span>
-              </button>
-            </div>
-          </div>            
-        </form>
+        {{#if isCitySearch}}
+        {{partial 'cities'}}
+        {{/if}}
       </div>
     </div>
   </div>
-  {{#if isCitySearch}}
-  {{partial 'cities'}}
-  {{/if}}
   {{outlet}}
 </script>
 
@@ -100,7 +105,7 @@
      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1">
       {{#if hasResults}}
       <div class='text-center'>
-        <strong>Select a City :</strong>
+        <h3>Select a City :</h3>
       </div>
       <div class="row">
         {{#each city in geoResults}}
@@ -120,51 +125,67 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="weather/city">
-  <div class="row">
-    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2">
-      <div class="well well-sm top-buffer text-center">
-        <div>
-          <strong>{{daddress}}</strong>
-        </div>
-        <div>
-          {{#each weather in wCityData.weather}}
-          <span>
-            {{img-weather weather.icon}}
-            <strong><i>{{weather.description}}</i> </strong>
-          </span>
-          {{/each}}
-          {{weather-map model}}
-        </div>
-        <p>
-          <span class="badge badge-info">{{wCityData.main.temp}}°F</span> temperature from {{wCityData.main.temp_min}}°F to {{wCityData.main.temp_max}}°F
-        </p>
-        <p>
-          Wind {{wCityData.wind.speed}}m/s, Clouds {{wCityData.clouds.all}}%, Pressure {{wCityData.main.pressure}} hpa 
-        </p>
-        <button type="button" {{action 'showCharts' wCityData}} class="btn btn-primary">Show/Update Charts</button>
+  <div id="cityWeatherInfo" class="container">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><strong>{{daddress}} Current Weather</strong></h3>
       </div>
-    </div>
-  </div>
-  {{#if isShowCharts}}
-  <div id="chartjsContainer" class="container-fluid">
-    <div class="row top-buffer">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="panel panel-danger">
-          <div class="panel-heading text-center">
-            <h3 class="panel-title">Hourly Weather Forecast</h3>
-          </div>
-          <div class="panel-body">
-            {{#each weatherChart in weatherCharts}}
-            <div class='chart'>
-              {{ember-chart type=weatherChart.type data=weatherChart.data update=true}}
-            </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
+            {{#each weather in wCityData.weather}}
+            <span>
+              {{img-weather weather.icon}}
+              <strong><i>{{weather.description}}</i> </strong>
+            </span>
             {{/each}}
           </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
+              {{weather-map model}}
+          </div>
+        </div>
+        <div class="row top-buffer">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
+            <p>
+              <span class="badge badge-info">{{wCityData.main.temp}}°F</span> temperature from {{wCityData.main.temp_min}}°F to {{wCityData.main.temp_max}}°F
+            </p>
+            <p>
+              Wind {{wCityData.wind.speed}}m/s, Clouds {{wCityData.clouds.all}}%, Pressure {{wCityData.main.pressure}} hpa 
+            </p>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
+            <button type="button" {{action 'showUpdateCharts' wCityData}} class="btn btn-primary">
+              {{#if isShowCharts}}
+              <span class="glyphicon glyphicon-refresh"></span> Refresh Forecast
+              {{else}}
+              <span class="glyphicon glyphicon-chevron-down"></span> Show Forecast
+              {{/if}}            
+            </button>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+{{#if isShowCharts}}
+<div id="chartContainer" class="container">
+  <div class="row top-buffer">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="panel panel-danger">
+        <div class="panel-heading text-center">
+          <h3 class="panel-title">Hourly Weather Forecast</h3>
+        </div>
+        <div class="panel-body">
+          {{#each weatherChart in weatherCharts}}
+          <div class='chart-wrapper'>
+            {{ember-chart type=weatherChart.type data=weatherChart.data update=true}}
+          </div>
+          {{/each}}
         </div>
       </div>
     </div>
   </div>
-  {{/if}}
+</div>
+{{/if}}
 </script>
 
 <!-- build:js(.) scripts/vendor.js -->

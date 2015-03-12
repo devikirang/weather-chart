@@ -64,10 +64,10 @@ Ember.Handlebars.helper('img-flag', function(country) {
 
 Ember.Handlebars.helper('img-weather', function(icon) {
 	var escaped = Handlebars.Utils.escapeExpression(icon);
-	return new Ember.Handlebars.SafeString('<img src="'+ URLs.get('host') +'/img/w/'+ escaped +'.png">');
+	return new Ember.Handlebars.SafeString('<img src="'+ URLs.get('host') +'/img/w/'+ escaped +'.png" class="img-thumbnail weather-icon">');
 });
 
 Ember.Handlebars.helper('weather-map', function(city) {
 	var hrefUrl = 'http://www.msn.com/en-us/weather/fullscreenmaps/' + _.words(city.daddress)[0] + '/we-city-' + city.lat + ',' + city.lon + '?maptype=temperature';
-	return new Ember.Handlebars.SafeString('<a class="btn btn-info" target="_blank" href="'+ hrefUrl + '"><span class="glyphicon glyphicon-new-window"></span> Map</a>');
+	return new Ember.Handlebars.SafeString('<a class="btn btn-info" target="_blank" href="'+ hrefUrl + '"><span class="glyphicon glyphicon-new-window"></span> Map View</a>');
 });
