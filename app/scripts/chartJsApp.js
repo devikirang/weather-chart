@@ -67,27 +67,29 @@ App.WeatherCityController = Ember.ObjectController.extend({
     showUpdateCharts: function(wCityData) {
       var temparatureChart = { 
         type: 'Line',
+        panelHeading: 'Temparature Forecast',
+        panelClass: 'panel panel-danger',
         data: {
           labels: [],
           datasets: [
           {
             label: 'Max Temparature',
-            fillColor: 'rgba(220,220,220,0.2)',
-            strokeColor: 'rgba(220,220,220,1)',
-            pointColor: 'rgba(220,220,220,1)',
+            fillColor: 'rgba(191, 63, 127, 0.2)',
+            strokeColor: 'rgba(191, 63, 127, 1)',
+            pointColor: 'rgba(191, 63, 127, 1)',
             pointStrokeColor: '#fff',
             pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
+            pointHighlightStroke: 'rgba(191, 63, 127, 1)',
             data: []
           },
           {
             label: 'Temparature',
-            fillColor: 'rgba(151,187,205,0.2)',
-            strokeColor: 'rgba(151,187,205,1)',
-            pointColor: 'rgba(151,187,205,1)',
+            fillColor: 'rgba(191, 63, 63, 0.2)',
+            strokeColor: 'rgba(191, 63, 63, 0.7)',
+            pointColor: 'rgba(191, 63, 63, 0.7)',
             pointStrokeColor: '#fff',
             pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(151,187,205,1)',
+            pointHighlightStroke: 'rgba(191, 63, 63, 0.7)',
             data: []
           }
           ]
@@ -96,6 +98,8 @@ App.WeatherCityController = Ember.ObjectController.extend({
 
       var pressureChart = { 
         type: 'Bar',
+        panelHeading: 'Pressure Forecast',
+        panelClass: 'panel panel-info',
         data: {
           labels: [],
           datasets: [{
@@ -108,13 +112,15 @@ App.WeatherCityController = Ember.ObjectController.extend({
             pointHighlightStroke: 'rgba(151,187,205,1)',
             data: []
           }]
+        },
+        options: {
+          scaleBeginAtZero : false
         }
       };
       var self = this;
       var previousWeekDay = '';
-      $.getJSON(URLs.forecast(wCityData.coord.lat, wCityData.coord.lon), function(data) {
-        var charts = [];
-        temparatureChart.data.labels = _.map(_.pluck(data.list, 'dt_txt'), function(dtTxt) {
+      $.getJSON(URLs.forecast(wCityData.coord.lat, wCityData.coord.lon), function(forecastData) {
+        var labels = _.map(_.pluck(forecastData.list, 'dt_txt'), function(dtTxt) {
           var date = moment(dtTxt, 'YYYY-MM-DD h:mm:ss'),
           currentWeekDay = date.format('ddd');
           if (previousWeekDay === currentWeekDay) {
@@ -124,9 +130,17 @@ App.WeatherCityController = Ember.ObjectController.extend({
             return date.format('Do ddd ha');
           }
         });
-        temparatureChart.data.datasets[0].data = _.map(_.map(data.list, 'main'), 'temp_max');
-        temparatureChart.data.datasets[1].data = _.map(_.map(data.list, 'main'), 'temp');
+
+        temparatureChart.data.labels = labels;
+        temparatureChart.data.datasets[0].data = _.map(_.map(forecastData.list, 'main'), 'temp_max');
+        temparatureChart.data.datasets[1].data = _.map(_.map(forecastData.list, 'main'), 'temp');
+
+        pressureChart.data.labels = labels;
+        pressureChart.data.datasets[0].data = _.map(_.map(forecastData.list, 'main'), 'pressure');
+
+        var charts = [];
         charts.push(temparatureChart);
+        charts.push(pressureChart);
         self.set('isShowCharts', true);
         self.set('model.weatherCharts', charts);
       }); 

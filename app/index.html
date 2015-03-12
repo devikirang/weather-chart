@@ -100,7 +100,7 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="cities">
-  <div id="searchResultsContainer" class="container top-buffer">
+  <div id="searchResultsContainer">
     <div class="row">
      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1">
       {{#if hasResults}}
@@ -168,22 +168,18 @@
 </div>
 {{#if isShowCharts}}
 <div id="chartContainer" class="container">
-  <div class="row top-buffer">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div class="panel panel-danger">
-        <div class="panel-heading text-center">
-          <h3 class="panel-title">Hourly Weather Forecast</h3>
-        </div>
-        <div class="panel-body">
-          {{#each weatherChart in weatherCharts}}
-          <div class='chart-wrapper'>
-            {{ember-chart type=weatherChart.type data=weatherChart.data update=true}}
-          </div>
-          {{/each}}
-        </div>
+  {{#each weatherChart in weatherCharts}}
+  <div {{bind-attr class=weatherChart.panelClass}}>
+    <div class="panel-heading text-center">
+      <h3 class="panel-title">Hourly {{weatherChart.panelHeading}}</h3>
+    </div>
+    <div class="panel-body">
+      <div class='chart-wrapper'>
+        {{ember-chart type=weatherChart.type data=weatherChart.data update=true}}
       </div>
     </div>
   </div>
+  {{/each}}
 </div>
 {{/if}}
 </script>
