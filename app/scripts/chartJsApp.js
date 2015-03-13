@@ -203,7 +203,7 @@ App.WeatherCityController = Ember.ObjectController.extend({
         precipitaionChart.data.datasets[0].data = _.map(_.map(_.map(forecastData.list, 'rain'), '3h'), function(num){
           return (num ? num : 0);
         });
-        precipitaionChart.data.datasets[1].data = _.map(_.map(_.map(forecastData.list, 'wind'), '3h'), function(num){
+        precipitaionChart.data.datasets[1].data = _.map(_.map(_.map(forecastData.list, 'snow'), '3h'), function(num){
           return (num ? num : 0);
         });
 

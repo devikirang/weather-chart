@@ -1,8 +1,8 @@
 #weather-chartjs
 
 Note :  **In Progress**
-* Done with Temparature Charts.
-* Other charts in progress.
+* Done with Temparature, Pressure, Rain & Show Charts.
+* TODO Labels.
 
 ## _Software Installation_
 
@@ -11,8 +11,8 @@ Run the below commands to download required dependencies.
 * Install node.js
 * `npm install -g bower`
 * `npm install -g grunt-cli`
-* `npm install`  - for `node_modules`
-* `bower install` - for `bower_components`
+* `npm install`  - for node_modules
+* `bower install` - for bower_components
 
 ## _Build & development_
 
