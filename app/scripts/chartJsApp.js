@@ -57,69 +57,127 @@ App.EmberChartComponent = Ember.Component.extend({
 
 });
 
+// Chart Graph models.
+function getTemparatureChart() {
+  return { 
+    type: 'Line',
+    panelHeading: 'Temparature Forecast',
+    panelClass: 'panel panel-danger',
+    data: {
+      labels: [],
+      datasets: [
+      {
+        label: 'Max Temparature',
+        fillColor: 'rgba(191, 63, 127, 0.2)',
+        strokeColor: 'rgba(191, 63, 127, 0.7)',
+        pointColor: 'rgba(191, 63, 127, 0.7)',
+        pointStrokeColor: '#fff',
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: 'rgba(191, 63, 127, 0.7)',
+        data: []
+      },
+      {
+        label: 'Temparature',
+        fillColor: 'rgba(191, 63, 63, 0.2)',
+        strokeColor: 'rgba(191, 63, 63, 0.7)',
+        pointColor: 'rgba(191, 63, 63, 0.7)',
+        pointStrokeColor: '#fff',
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: 'rgba(191, 63, 63, 0.7)',
+        data: []
+      }
+      ]
+    }
+  };
+}
+
+function getPressureChart() {
+  return { 
+    type: 'Bar',
+    panelHeading: 'Pressure Forecast',
+    panelClass: 'panel panel-info',
+    data: {
+      labels: [],
+      datasets: [{
+        label: 'Pressure',
+        fillColor: 'rgba(151,187,205,0.2)',
+        strokeColor: 'rgba(151,187,205,1)',
+        pointColor: 'rgba(151,187,205,1)',
+        pointStrokeColor: '#fff',
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: 'rgba(151,187,205,1)',
+        data: []
+      }]
+    },
+    options: {
+      scaleBeginAtZero : false
+    }
+  };
+}
+
+function getPrecipitaionChart() {
+  return { 
+    type: 'Line',
+    panelHeading: 'Precipitaion Forecast',
+    panelClass: 'panel panel-success',
+    data: {
+      labels: [],
+      datasets: [
+      {
+        label: 'Rain',
+        fillColor: 'rgba(151,187,205,0.2)',
+        strokeColor: 'rgba(151,187,205,1)',
+        pointColor: 'rgba(151,187,205,1)',
+        pointStrokeColor: '#fff',
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: 'rgba(151,187,205,1)',
+        data: []
+      },
+      {
+        label: 'Snow',
+        fillColor: 'rgba(191, 63, 63, 0.2)',
+        strokeColor: 'rgba(191, 63, 63, 0.7)',
+        pointColor: 'rgba(191, 63, 63, 0.7)',
+        pointStrokeColor: '#fff',
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: 'rgba(191, 63, 63, 0.7)',
+        data: []
+      }
+      ]
+    },
+    options: {
+      scaleBeginAtZero : false
+    }
+  };
+}
+
 // Chartjs settings
 Chart.defaults.global.responsive = true;
 
 // MVC
 App.WeatherCityController = Ember.ObjectController.extend({
-  isShowCharts: false,
+  hasCharts: false,
+  
   model: {
     weatherCharts: []
-  },  
+  },
+
+  hasCurrentWeather: function() {
+    var address = this.get('model.daddress');
+    return address && address.length > 0;
+  }.property('model.daddress'),  
+
+  noChartsPresent: function() {
+    var charts = this.get('model.weatherCharts');
+    return !charts || charts.length === 0;
+  }.property('model.weatherCharts'),
+
   actions: {
     showUpdateCharts: function(wCityData) {
-      var temparatureChart = { 
-        type: 'Line',
-        panelHeading: 'Temparature Forecast',
-        panelClass: 'panel panel-danger',
-        data: {
-          labels: [],
-          datasets: [
-          {
-            label: 'Max Temparature',
-            fillColor: 'rgba(191, 63, 127, 0.2)',
-            strokeColor: 'rgba(191, 63, 127, 1)',
-            pointColor: 'rgba(191, 63, 127, 1)',
-            pointStrokeColor: '#fff',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(191, 63, 127, 1)',
-            data: []
-          },
-          {
-            label: 'Temparature',
-            fillColor: 'rgba(191, 63, 63, 0.2)',
-            strokeColor: 'rgba(191, 63, 63, 0.7)',
-            pointColor: 'rgba(191, 63, 63, 0.7)',
-            pointStrokeColor: '#fff',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(191, 63, 63, 0.7)',
-            data: []
-          }
-          ]
-        }
-      };
+      var temparatureChart = getTemparatureChart();
+      var pressureChart = getPressureChart();
+      var precipitaionChart = getPrecipitaionChart();
 
-      var pressureChart = { 
-        type: 'Bar',
-        panelHeading: 'Pressure Forecast',
-        panelClass: 'panel panel-info',
-        data: {
-          labels: [],
-          datasets: [{
-            label: 'Pressure',
-            fillColor: 'rgba(151,187,205,0.2)',
-            strokeColor: 'rgba(151,187,205,1)',
-            pointColor: 'rgba(151,187,205,1)',
-            pointStrokeColor: '#fff',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(151,187,205,1)',
-            data: []
-          }]
-        },
-        options: {
-          scaleBeginAtZero : false
-        }
-      };
       var self = this;
       var previousWeekDay = '';
       $.getJSON(URLs.forecast(wCityData.coord.lat, wCityData.coord.lon), function(forecastData) {
@@ -141,12 +199,31 @@ App.WeatherCityController = Ember.ObjectController.extend({
         pressureChart.data.labels = labels;
         pressureChart.data.datasets[0].data = _.map(_.map(forecastData.list, 'main'), 'pressure');
 
+        precipitaionChart.data.labels = labels;
+        precipitaionChart.data.datasets[0].data = _.map(_.map(_.map(forecastData.list, 'rain'), '3h'), function(num){
+          return (num ? num : 0);
+        });
+        precipitaionChart.data.datasets[1].data = _.map(_.map(_.map(forecastData.list, 'wind'), '3h'), function(num){
+          return (num ? num : 0);
+        });
+
+        // Remove snow if no data.
+        _.remove(precipitaionChart.data.datasets, function(dataset) {
+          var noData = _.filter(dataset.data, function(n) {
+            return n !== 0;
+          }).length === 0;
+          return noData;
+        });
+
         var charts = [];
         charts.push(temparatureChart);
         charts.push(pressureChart);
-        self.set('isShowCharts', charts.length > 0);
+        if (precipitaionChart.data.datasets.length > 0) {
+          charts.push(precipitaionChart);  
+        }
+        self.set('hasCharts', charts.length > 0);
         self.set('model.weatherCharts', charts);
       }); 
-    }
-  }
+}
+}
 });

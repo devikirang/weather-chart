@@ -129,7 +129,8 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="weather/city">
-  <div id="cityWeatherInfo" class="container">
+{{#if hasCurrentWeather}}
+<div id="cityWeatherInfo" class="container">
     <div class="panel panel-success">
       <div class="panel-heading">
         <h3 class="panel-title text-center"><strong>{{daddress}} Current Weather</strong></h3>
@@ -159,18 +160,20 @@
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
             <button type="button" {{action 'showUpdateCharts' wCityData}} class="btn btn-primary">
-              {{#if isShowCharts}}
-              <span class="glyphicon glyphicon-refresh"></span> Refresh Forecast
-              {{else}}
+              {{#if noChartsPresent}}
               <span class="glyphicon glyphicon-chevron-down"></span> Show Forecast
-              {{/if}}            
+              {{else}}
+              <span class="glyphicon glyphicon-refresh"></span> Refresh Forecast
+              {{/if}}
             </button>
           </div>
         </div>
     </div>
   </div>
 </div>
-{{#if isShowCharts}}
+{{/if}}
+
+{{#if hasCharts}}
 <div id="chartContainer" class="container">
   {{#each weatherChart in weatherCharts}}
   <div {{bind-attr class=weatherChart.panelClass}}>
