@@ -1,12 +1,12 @@
 #weather-chart
 
 * Application built Using ember.js, Bootstrap, lodash.js, moment.js, Chart.js & jQuery JS libraries
-* Temparature, Pressure, Rain & Show Charts using openweathermap.org weather api.
+* Temparature, Pressure, Rain & Snow Charts using openweathermap.org weather api.
 	* Update `OPEN_WEATHER_API_KEY` in `app/scripts/initApp.js`
 * Search city/ZIP using Google Maps API.
 	* Update `GOOGLE_MAP_API_KEY` in `app/index.html`
-* TODO need to use local Time Zone for charts
-* Used Grunt for build and deployment.
+* TODO need to use local Time Zone for charts, Right now time in GMT.
+* Used Grunt tool for build and deployment.
 
 ## _Software Installation_
 
