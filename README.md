@@ -1,6 +1,6 @@
 #weather-chart
 
-* Application built Using ember.js, Bootstrap. lodash.js, moment.js, chart.js & jQuery JS libraries
+* Application built Using ember.js, Bootstrap, lodash.js, moment.js, Chart.js & jQuery JS libraries
 * Temparature, Pressure, Rain & Show Charts using openweathermap.org weather api.
 	* Update `OPEN_WEATHER_API_KEY` in `app/scripts/initApp.js`
 * Search city/ZIP using Google Maps API.
