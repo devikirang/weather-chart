@@ -30,6 +30,7 @@
     "Chart": false,
     "google": false,
     "App": true,
+    "AppAjaxService": true,
     "URLs": true
   }
 }

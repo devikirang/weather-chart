@@ -232,6 +232,6 @@ App.WeatherCityController = Ember.ObjectController.extend({
         self.set('hasCharts', charts.length > 0);
         self.set('model.weatherCharts', charts);
       }); 
-    }
-  }
+}
+}
 });

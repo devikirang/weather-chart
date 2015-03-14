@@ -89,6 +89,12 @@
               </div>            
             </form>
           </div>
+
+          <div id="loading" class="pull-right">
+            <div class="loading-message">
+              <img src="images/spinner.gif"/> Loading ...
+            </div>
+          </div>
         </div>
         {{#if isCitySearch}}
         {{partial 'cities'}}
@@ -110,7 +116,7 @@
       <div class="row">
         {{#each city in geoResults}}
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
-          <button type="button" {{action 'selectCity' city}} class="btn btn-link city-link"> <strong>{{city.daddress}}</strong> </button>
+          <a {{action 'selectCity' city}}> <strong>{{city.daddress}}</strong> </a>
         </div>
         {{/each}}
       </div>
@@ -126,15 +132,6 @@
     </div>
   </div>
 </div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="loading">
-  <div class="loading-pane">
-    <div class="loading-message">
-      Loading stuff, please have a cold beer.
-      <div class="spinner"></div>
-    </div>
-  </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="weather/city">

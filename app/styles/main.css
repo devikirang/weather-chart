@@ -13,3 +13,6 @@ body {
 .img-thumbnail.weather-icon {
 	background: #DFF0D8;
 }
+#loading {
+	display: none;
+}
