@@ -7,7 +7,10 @@ body {
 .navbar-nav a.active {
 	font-weight: bold;
 }
-.city-link:focus, .city-link:hover {
+.btn-link.city-link {
+	white-space: normal;
+}
+.btn-link.city-link:focus, .btn-link.city-link:hover {
 	text-decoration: none;
 }
 .img-thumbnail.weather-icon {
