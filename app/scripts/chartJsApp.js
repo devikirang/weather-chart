@@ -19,6 +19,7 @@ App.EmberChartComponent = Ember.Component.extend({
     var type = this.get('type').charAt(0).toUpperCase() + this.get('type').slice(1);
     if(!type.match(/(Line|Bar|Radar|PolarArea|Pie|Doughnut)/)) { type = 'Line'; }
     var options = (this.get('options') !== undefined) ? this.get('options') : {};
+    options.legendTemplate = '<ul class=\"<%=name.toLowerCase()%>-legend list-inline text-right\"><% for (var i=0; i<datasets.length; i++){%><li><span class=\"label\" style=\"background-color:<%=datasets[i].strokeColor%>\"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%> </span></li><%}%></ul>';
 
     this.setProperties({
       '_data': data,
@@ -38,6 +39,12 @@ App.EmberChartComponent = Ember.Component.extend({
    */
    chartRender: function(){
     var chart = new Chart(this.get('_context'))[this.get('_type')](this.get('_data'),this.get('_options'));
+    
+    if (this.get('legend')) {
+      var legend = chart.generateLegend();
+      this.$().parent().prepend(legend);
+    }
+
     this.setProperties({
       '_chart': chart,
       'setup': true
@@ -58,16 +65,16 @@ App.EmberChartComponent = Ember.Component.extend({
 });
 
 // Chart Graph models.
-function getTemparatureChart() {
+function getTemperatureChart() {
   return { 
     type: 'Line',
-    panelHeading: 'Temparature Forecast',
+    panelHeading: 'Temperature Forecast',
     panelClass: 'panel panel-danger',
     data: {
       labels: [],
       datasets: [
       {
-        label: 'Max Temparature',
+        label: 'Max Temperature (°F)',
         fillColor: 'rgba(191, 63, 127, 0.2)',
         strokeColor: 'rgba(191, 63, 127, 0.7)',
         pointColor: 'rgba(191, 63, 127, 0.7)',
@@ -77,7 +84,7 @@ function getTemparatureChart() {
         data: []
       },
       {
-        label: 'Temparature',
+        label: 'Temperature (°F)',
         fillColor: 'rgba(191, 63, 63, 0.2)',
         strokeColor: 'rgba(191, 63, 63, 0.7)',
         pointColor: 'rgba(191, 63, 63, 0.7)',
@@ -99,7 +106,7 @@ function getPressureChart() {
     data: {
       labels: [],
       datasets: [{
-        label: 'Pressure',
+        label: 'Pressure (hpa)',
         fillColor: 'rgba(151,187,205,0.2)',
         strokeColor: 'rgba(151,187,205,1)',
         pointColor: 'rgba(151,187,205,1)',
@@ -124,7 +131,7 @@ function getPrecipitaionChart() {
       labels: [],
       datasets: [
       {
-        label: 'Rain',
+        label: 'Rain (mm)',
         fillColor: 'rgba(151,187,205,0.2)',
         strokeColor: 'rgba(151,187,205,1)',
         pointColor: 'rgba(151,187,205,1)',
@@ -134,7 +141,7 @@ function getPrecipitaionChart() {
         data: []
       },
       {
-        label: 'Snow',
+        label: 'Snow (mm)',
         fillColor: 'rgba(191, 63, 63, 0.2)',
         strokeColor: 'rgba(191, 63, 63, 0.7)',
         pointColor: 'rgba(191, 63, 63, 0.7)',
@@ -174,40 +181,41 @@ App.WeatherCityController = Ember.ObjectController.extend({
 
   actions: {
     showUpdateCharts: function(wCityData) {
-      var temparatureChart = getTemparatureChart();
+      var temperatureChart = getTemperatureChart();
       var pressureChart = getPressureChart();
       var precipitaionChart = getPrecipitaionChart();
 
       var self = this;
       var previousWeekDay = '';
-      $.getJSON(URLs.forecast(wCityData.coord.lat, wCityData.coord.lon), function(forecastData) {
-        var labels = _.map(_.pluck(forecastData.list, 'dt_txt'), function(dtTxt) {
-          var date = moment(dtTxt, 'YYYY-MM-DD h:mm:ss'),
-          currentWeekDay = date.format('ddd');
-          if (previousWeekDay === currentWeekDay) {
-            return date.format('ha');
-          } else {
-            previousWeekDay = currentWeekDay;
-            return date.format('Do ddd ha');
-          }
-        });
+      AppAjaxService.doGetCall(URLs.forecast(wCityData.coord.lat, wCityData.coord.lon), 
+        function(forecastData) {
+          var labels = _.map(_.pluck(forecastData.list, 'dt_txt'), function(dtTxt) {
+            var date = moment(dtTxt, 'YYYY-MM-DD h:mm:ss'),
+            currentWeekDay = date.format('ddd');
+            if (previousWeekDay === currentWeekDay) {
+              return date.format('ha');
+            } else {
+              previousWeekDay = currentWeekDay;
+              return date.format('Do ddd ha');
+            }
+          });
 
-        temparatureChart.data.labels = labels;
-        temparatureChart.data.datasets[0].data = _.map(_.map(forecastData.list, 'main'), 'temp_max');
-        temparatureChart.data.datasets[1].data = _.map(_.map(forecastData.list, 'main'), 'temp');
+          temperatureChart.data.labels = labels;
+          temperatureChart.data.datasets[0].data = _.map(_.map(forecastData.list, 'main'), 'temp_max');
+          temperatureChart.data.datasets[1].data = _.map(_.map(forecastData.list, 'main'), 'temp');
 
-        pressureChart.data.labels = labels;
-        pressureChart.data.datasets[0].data = _.map(_.map(forecastData.list, 'main'), 'pressure');
+          pressureChart.data.labels = labels;
+          pressureChart.data.datasets[0].data = _.map(_.map(forecastData.list, 'main'), 'pressure');
 
-        precipitaionChart.data.labels = labels;
-        precipitaionChart.data.datasets[0].data = _.map(_.map(_.map(forecastData.list, 'rain'), '3h'), function(num){
-          return (num ? num : 0);
-        });
-        precipitaionChart.data.datasets[1].data = _.map(_.map(_.map(forecastData.list, 'snow'), '3h'), function(num){
-          return (num ? num : 0);
-        });
+          precipitaionChart.data.labels = labels;
+          precipitaionChart.data.datasets[0].data = _.map(_.map(_.map(forecastData.list, 'rain'), '3h'), function(num) {
+            return (num ? num : 0);
+          });
+          precipitaionChart.data.datasets[1].data = _.map(_.map(_.map(forecastData.list, 'snow'), '3h'), function(num) {
+            return (num ? num : 0);
+          });
 
-        // Remove snow if no data.
+        // Remove if no data to show.
         _.remove(precipitaionChart.data.datasets, function(dataset) {
           var noData = _.filter(dataset.data, function(n) {
             return n !== 0;
@@ -216,7 +224,7 @@ App.WeatherCityController = Ember.ObjectController.extend({
         });
 
         var charts = [];
-        charts.push(temparatureChart);
+        charts.push(temperatureChart);
         charts.push(pressureChart);
         if (precipitaionChart.data.datasets.length > 0) {
           charts.push(precipitaionChart);  
@@ -224,6 +232,6 @@ App.WeatherCityController = Ember.ObjectController.extend({
         self.set('hasCharts', charts.length > 0);
         self.set('model.weatherCharts', charts);
       }); 
-}
-}
+    }
+  }
 });

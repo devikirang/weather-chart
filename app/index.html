@@ -128,6 +128,15 @@
 </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="loading">
+  <div class="loading-pane">
+    <div class="loading-message">
+      Loading stuff, please have a cold beer.
+      <div class="spinner"></div>
+    </div>
+  </div>
+</script>
+
 <script type="text/x-handlebars" data-template-name="weather/city">
 {{#if hasCurrentWeather}}
 <div id="cityWeatherInfo" class="container">
@@ -182,7 +191,7 @@
     </div>
     <div class="panel-body">
       <div class='chart-wrapper'>
-        {{ember-chart type=weatherChart.type data=weatherChart.data options=weatherChart.options update=true}}
+        {{ember-chart type=weatherChart.type data=weatherChart.data options=weatherChart.options update=true legend=true}}
       </div>
     </div>
   </div>
@@ -206,7 +215,7 @@
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/app.js -->
-<script src="scripts/weatherApp.js"></script>
+<script src="scripts/initWeatherApp.js"></script>
 <script src="scripts/searchApp.js"></script>
 <script src="scripts/chartJsApp.js"></script>
 <!-- endbuild -->

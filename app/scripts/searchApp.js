@@ -6,8 +6,6 @@ App.Router.map(function() {
   });
 });
 
-var SelectedCity = {};
-
 //MVC
 App.IndexRoute = Ember.Route.extend({
   beforeModel: function() {
@@ -62,11 +60,10 @@ App.WeatherController = Ember.ObjectController.extend({
     selectCity: function(geoCity) {
       // Update City Selection.
       var self = this;
-      $.getJSON(URLs.geoLocation(geoCity.lat, geoCity.lon)).done(function(data) {
+      AppAjaxService.doGetCall(URLs.geoLocation(geoCity.lat, geoCity.lon), function(data) {
         self.set('isCitySearch', false);
         self.set('isCitySelected', true);
         geoCity.wCityData = data;
-        SelectedCity = geoCity;
 
         self.transitionToRoute('weather.city', geoCity);
       });
