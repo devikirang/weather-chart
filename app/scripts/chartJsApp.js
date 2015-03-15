@@ -19,7 +19,7 @@ App.EmberChartComponent = Ember.Component.extend({
     var type = this.get('type').charAt(0).toUpperCase() + this.get('type').slice(1);
     if(!type.match(/(Line|Bar|Radar|PolarArea|Pie|Doughnut)/)) { type = 'Line'; }
     var options = (this.get('options') !== undefined) ? this.get('options') : {};
-    options.legendTemplate = '<ul class=\"<%=name.toLowerCase()%>-legend list-inline text-right\"><% for (var i=0; i<datasets.length; i++){%><li><span class=\"label\" style=\"background-color:<%=datasets[i].strokeColor%>\"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%> </span></li><%}%></ul>';
+    options.legendTemplate = '<ul class=\"<%=name.toLowerCase()%>-legend list-inline text-right\"><% for (var i=0; i<datasets.length; i++){%><li><span class=\"label\" style=\"background-color:<%=datasets[i].strokeColor%>\"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%> </span></li><%}%> <li><span class=\"label label-info\">Time in GMT</span></li> </ul>';
 
     this.setProperties({
       '_data': data,
@@ -74,7 +74,7 @@ function getTemperatureChart() {
       labels: [],
       datasets: [
       {
-        label: 'Max Temperature (°F)',
+        label: 'Max. Temperature in °F',
         fillColor: 'rgba(191, 63, 127, 0.2)',
         strokeColor: 'rgba(191, 63, 127, 0.7)',
         pointColor: 'rgba(191, 63, 127, 0.7)',
@@ -84,7 +84,7 @@ function getTemperatureChart() {
         data: []
       },
       {
-        label: 'Temperature (°F)',
+        label: 'Temperature in °F',
         fillColor: 'rgba(191, 63, 63, 0.2)',
         strokeColor: 'rgba(191, 63, 63, 0.7)',
         pointColor: 'rgba(191, 63, 63, 0.7)',
@@ -106,7 +106,7 @@ function getPressureChart() {
     data: {
       labels: [],
       datasets: [{
-        label: 'Pressure (hpa)',
+        label: 'Pressure in hpa',
         fillColor: 'rgba(151,187,205,0.2)',
         strokeColor: 'rgba(151,187,205,1)',
         pointColor: 'rgba(151,187,205,1)',
@@ -131,7 +131,7 @@ function getPrecipitaionChart() {
       labels: [],
       datasets: [
       {
-        label: 'Rain (mm)',
+        label: 'Rain in mm',
         fillColor: 'rgba(151,187,205,0.2)',
         strokeColor: 'rgba(151,187,205,1)',
         pointColor: 'rgba(151,187,205,1)',
@@ -141,7 +141,7 @@ function getPrecipitaionChart() {
         data: []
       },
       {
-        label: 'Snow (mm)',
+        label: 'Snow in mm',
         fillColor: 'rgba(191, 63, 63, 0.2)',
         strokeColor: 'rgba(191, 63, 63, 0.7)',
         pointColor: 'rgba(191, 63, 63, 0.7)',
@@ -203,6 +203,11 @@ App.WeatherCityController = Ember.ObjectController.extend({
           temperatureChart.data.labels = labels;
           temperatureChart.data.datasets[0].data = _.map(_.map(forecastData.list, 'main'), 'temp_max');
           temperatureChart.data.datasets[1].data = _.map(_.map(forecastData.list, 'main'), 'temp');
+
+          if (_.xor(temperatureChart.data.datasets[0].data, temperatureChart.data.datasets[1].data).length === 0) {
+            _.pullAt(temperatureChart.data.datasets, 0);
+          }
+
 
           pressureChart.data.labels = labels;
           pressureChart.data.datasets[0].data = _.map(_.map(forecastData.list, 'main'), 'pressure');

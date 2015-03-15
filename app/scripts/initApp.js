@@ -39,9 +39,9 @@ var AppAjaxService = {
 			dataType: 'jsonp',
 			retryMax : 5,
 			timeout: 20000,
-			success : function(data) { 
-				$('#loading').hide(); 
-				successCallback.call(data); 
+			success : function(data) {
+        successCallback(data);
+				$('#loading').hide();
 			},
 			error : function(xhr, textStatus, errorThrown ) {
 				console.log('xhr:' + xhr + ' error:' + textStatus + ' errorThrown:' + errorThrown);
