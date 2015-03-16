@@ -76,21 +76,21 @@ function getTemperatureChart() {
       {
         label: 'Max. Temperature in °F',
         fillColor: 'rgba(191, 63, 127, 0.2)',
-        strokeColor: 'rgba(191, 63, 127, 0.7)',
-        pointColor: 'rgba(191, 63, 127, 0.7)',
+        strokeColor: 'rgba(191, 63, 127, 1)',
+        pointColor: 'rgba(191, 63, 127, 1)',
         pointStrokeColor: '#fff',
         pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(191, 63, 127, 0.7)',
+        pointHighlightStroke: 'rgba(191, 63, 127, 1)',
         data: []
       },
       {
         label: 'Temperature in °F',
         fillColor: 'rgba(191, 63, 63, 0.2)',
-        strokeColor: 'rgba(191, 63, 63, 0.7)',
-        pointColor: 'rgba(191, 63, 63, 0.7)',
+        strokeColor: 'rgba(191, 63, 63, 1)',
+        pointColor: 'rgba(191, 63, 63, 1)',
         pointStrokeColor: '#fff',
         pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(191, 63, 63, 0.7)',
+        pointHighlightStroke: 'rgba(191, 63, 63, 1)',
         data: []
       }
       ]
@@ -132,22 +132,22 @@ function getPrecipitaionChart() {
       datasets: [
       {
         label: 'Rain in mm',
-        fillColor: 'rgba(151,187,205,0.2)',
-        strokeColor: 'rgba(151,187,205,1)',
-        pointColor: 'rgba(151,187,205,1)',
+        fillColor: 'rgba(114, 114, 140, 0.2)',
+        strokeColor: 'rgba(114, 114, 140, 1)',
+        pointColor: 'rgba(114, 114, 140, 1)',
         pointStrokeColor: '#fff',
         pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(151,187,205,1)',
+        pointHighlightStroke: 'rgba(114, 114, 140, 1)',
         data: []
       },
       {
         label: 'Snow in mm',
-        fillColor: 'rgba(191, 63, 63, 0.2)',
-        strokeColor: 'rgba(191, 63, 63, 0.7)',
-        pointColor: 'rgba(191, 63, 63, 0.7)',
+        fillColor: 'rgba(191, 191, 63, 0.2)',
+        strokeColor: 'rgba(191, 191, 63, 1)',
+        pointColor: 'rgba(191, 191, 63, 1)',
         pointStrokeColor: '#fff',
         pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(191, 63, 63, 0.7)',
+        pointHighlightStroke: 'rgba(191, 191, 63, 1)',
         data: []
       }
       ]
@@ -182,9 +182,9 @@ App.WeatherCityController = Ember.ObjectController.extend({
   actions: {
     showUpdateCharts: function(wCityData) {
       var temperatureChart = getTemperatureChart();
-      var pressureChart = getPressureChart();
       var precipitaionChart = getPrecipitaionChart();
-
+      var pressureChart = getPressureChart();
+      
       var self = this;
       var previousWeekDay = '';
       AppAjaxService.doGetCall(URLs.forecast(wCityData.coord.lat, wCityData.coord.lon), 
@@ -219,24 +219,23 @@ App.WeatherCityController = Ember.ObjectController.extend({
           precipitaionChart.data.datasets[1].data = _.map(_.map(_.map(forecastData.list, 'snow'), '3h'), function(num) {
             return (num ? num : 0);
           });
+          // Remove if no data to show.
+          _.remove(precipitaionChart.data.datasets, function(dataset) {
+            var noData = _.filter(dataset.data, function(n) {
+              return n !== 0;
+            }).length === 0;
+            return noData;
+          });
 
-        // Remove if no data to show.
-        _.remove(precipitaionChart.data.datasets, function(dataset) {
-          var noData = _.filter(dataset.data, function(n) {
-            return n !== 0;
-          }).length === 0;
-          return noData;
-        });
-
-        var charts = [];
-        charts.push(temperatureChart);
-        charts.push(pressureChart);
-        if (precipitaionChart.data.datasets.length > 0) {
-          charts.push(precipitaionChart);  
-        }
-        self.set('hasCharts', charts.length > 0);
-        self.set('model.weatherCharts', charts);
-      }); 
+          var charts = [];
+          charts.push(temperatureChart);
+          if (precipitaionChart.data.datasets.length > 0) {
+            charts.push(precipitaionChart);  
+          }
+          charts.push(pressureChart);
+          self.set('hasCharts', charts.length > 0);
+          self.set('model.weatherCharts', charts);
+        }); 
 }
 }
 });

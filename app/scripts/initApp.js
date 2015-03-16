@@ -102,21 +102,12 @@ App.OpenWeatherUrlObject = Ember.Object.extend({
 
 var URLs = App.OpenWeatherUrlObject.create();
 
-Ember.Handlebars.helper('img-flag', function(country) {
-	if (country && country.length === 2) {
-		var escaped = Handlebars.Utils.escapeExpression(country);
-		return new Ember.Handlebars.SafeString('<img src="'+ URLs.get('host') +'/images/flags/'+ escaped.toLowerCase() +'.png">');
-	} else {
-		return '';
-	}
-});
-
-Ember.Handlebars.helper('img-weather', function(icon) {
+Ember.Handlebars.helper('weather-img', function(icon) {
 	var escaped = Handlebars.Utils.escapeExpression(icon);
 	return new Ember.Handlebars.SafeString('<img src="'+ URLs.get('host') +'/img/w/'+ escaped +'.png" class="img-thumbnail weather-icon">');
 });
 
 Ember.Handlebars.helper('weather-map', function(city) {
 	var hrefUrl = 'http://www.msn.com/en-us/weather/fullscreenmaps/' + _.words(city.daddress)[0] + '/we-city-' + city.lat + ',' + city.lon + '?maptype=temperature';
-	return new Ember.Handlebars.SafeString('<a class="btn btn-info" target="_blank" href="'+ hrefUrl + '"><span class="glyphicon glyphicon-new-window"></span> Map View</a>');
+	return new Ember.Handlebars.SafeString('<a class="btn btn-info top-buffer" target="_blank" href="'+ hrefUrl + '"><span class="glyphicon glyphicon-new-window"></span> Map View</a>');
 });

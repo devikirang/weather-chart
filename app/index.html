@@ -92,7 +92,7 @@
 
           <div id="loading" class="pull-right">
             <div class="loading-message">
-              <img src="images/spinner.gif"/> Loading ...
+              <img src="images/spinner.gif"/> <strong>Loading </strong><span class="glyphicon glyphicon-option-horizontal"></span>
             </div>
           </div>
         </div>
@@ -143,35 +143,47 @@
       </div>
       <div class="panel-body">
         <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
+          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 text-center">
             {{#each weather in wCityData.weather}}
             <span>
-              {{img-weather weather.icon}}
-              <strong><i>{{weather.description}}</i> </strong>
+              {{weather-img weather.icon}}
+              <strong><i class='text-capitalize'>{{weather.description}}</i> </strong>
             </span>
             {{/each}}
           </div>
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
+          <div class="col-xs-5 col-sm-3 col-md-3 col-lg-3 text-center">
+              <h3 class='temp-info text-nowrap'>{{wCityData.main.temp}} °F</h3>
+              <div>High: <span class="temp-info text-nowrap">{{wCityData.main.temp_max}}°F</span> </div>
+              <div>Low: <span class="temp-info text-nowrap">{{wCityData.main.temp_min}}°F</span> </div>
+          </div>
+          <div class="col-xs-7 col-sm-3 col-md-3 col-lg-3 top-buffer">
+              <table class="table table-hover">
+                <tbody>
+                  <tr>
+                    <td>Clouds:</td>
+                    <td><strong>{{wCityData.clouds.all}}%</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Pressure:</td>
+                    <td><strong>{{wCityData.main.pressure}} hpa</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Wind:</td>
+                    <td><strong>{{wCityData.wind.speed}} m/s</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 text-center">              
               {{weather-map model}}
-          </div>
-        </div>
-        <div class="row top-buffer">
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
-            <p>
-              <span class="badge badge-info">{{wCityData.main.temp}}°F</span> temperature from {{wCityData.main.temp_min}}°F to {{wCityData.main.temp_max}}°F
-            </p>
-            <p>
-              Wind {{wCityData.wind.speed}}m/s, Clouds {{wCityData.clouds.all}}%, Pressure {{wCityData.main.pressure}} hpa 
-            </p>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
-            <button type="button" {{action 'showUpdateCharts' wCityData}} class="btn btn-primary">
-              {{#if noChartsPresent}}
-              <span class="glyphicon glyphicon-chevron-down"></span> Show Forecast
-              {{else}}
-              <span class="glyphicon glyphicon-refresh"></span> Refresh Forecast
-              {{/if}}
-            </button>
+
+              <button type="button" {{action 'showUpdateCharts' wCityData}} class="btn btn-primary  top-buffer">
+                {{#if noChartsPresent}}
+                <span class="glyphicon glyphicon-chevron-down"></span> Weather Forecast
+                {{else}}
+                <span class="glyphicon glyphicon-refresh"></span> Refresh Forecast
+                {{/if}}
+              </button>
           </div>
         </div>
     </div>

@@ -16,6 +16,9 @@ body {
 .img-thumbnail.weather-icon {
 	background: #DFF0D8;
 }
+.temp-info {
+	color: #A94869;
+}
 #loading {
 	display: none;
 }
