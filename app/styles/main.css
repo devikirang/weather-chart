@@ -1,5 +1,9 @@
 body {
-	background-color: #D3D3D3;
+	background: url(../images/bg.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 .top-buffer { 
 	margin-top:20px; 
