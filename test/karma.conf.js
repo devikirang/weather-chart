@@ -26,7 +26,7 @@ module.exports = function(config) {
       // endbower
       'app/scripts/initApp.js',
       'app/scripts/searchApp.js',
-      'app/scripts/chartJsApp.js',
+      'app/scripts/chartApp.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
