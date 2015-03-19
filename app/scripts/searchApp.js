@@ -24,6 +24,12 @@ App.WeatherController = Ember.ObjectController.extend({
     hasResults: false,
     city: {}
   },
+  setData: function(isCitySearch, isCitySelected, geoResults, hasResults) {
+    this.set('isCitySearch', isCitySearch);
+    this.set('isCitySelected', isCitySelected);
+    this.set('model.geoResults', geoResults);
+    this.set('model.hasResults', hasResults);
+  },
   actions: {
     searchCity: function() {
       var searchText = this.get('searchText');
@@ -35,8 +41,8 @@ App.WeatherController = Ember.ObjectController.extend({
         }, function(resultsData, status) {
           if (status === google.maps.GeocoderStatus.OK) {
             var geoResults = _.map(resultsData, function(result) {
-              /*jshint camelcase: false */
               return {
+                /*jshint camelcase: false */
                 'daddress': result.formatted_address,
                 'faddress': result.formatted_address.replace(/\s+/g, '-'),
                 'lat': result.geometry.location.lat(),
@@ -47,18 +53,14 @@ App.WeatherController = Ember.ObjectController.extend({
             if (geoResults.length === 1) {
               self.send('selectCity', geoResults[0]); // Send the first city.
             } else {
-              self.set('isCitySearch', true);
-              self.set('isCitySelected', false);
-              self.set('model.geoResults', geoResults);
-              self.set('model.hasResults', (geoResults.length > 0));
+              self.setData(true, false, geoResults, (geoResults.length > 0));
             }
+          } else {
+            self.setData(true, false, [], false);
           }
         });
       } else {
-        this.set('isCitySearch', true);
-        this.set('isCitySelected', false);
-        this.set('model.geoResults', []);
-        this.set('model.hasResults', false);
+        this.setData(true, false, [], false);
       }
     },
     selectCity: function(geoCity) {
