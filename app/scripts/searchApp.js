@@ -1,8 +1,10 @@
 'use strict';
 // Router info
 App.Router.map(function() {
-  this.route('weather', function(){
-    this.route('city', {path: 'city/:faddress/:lat/:lon'});
+  this.route('weather', function() {
+    this.route('city', {
+      path: 'city/:faddress/:lat/:lon'
+    });
   });
 });
 
@@ -27,20 +29,22 @@ App.WeatherController = Ember.ObjectController.extend({
       var searchText = this.get('searchText');
       if (searchText) {
         var self = this;
-        var geocoder =  new google.maps.Geocoder();
-        geocoder.geocode( { 'address': this.get('searchText')}, function(resultsData, status) {
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+          'address': this.get('searchText')
+        }, function(resultsData, status) {
           if (status === google.maps.GeocoderStatus.OK) {
-            var geoResults = _.map(resultsData, function(result) { 
+            var geoResults = _.map(resultsData, function(result) {
               /*jshint camelcase: false */
-              return { 
-                'daddress': result.formatted_address,  
-                'faddress' : result.formatted_address.replace(/\s+/g, '-'), 
-                'lat': result.geometry.location.lat(), 
-                'lon': result.geometry.location.lng() 
+              return {
+                'daddress': result.formatted_address,
+                'faddress': result.formatted_address.replace(/\s+/g, '-'),
+                'lat': result.geometry.location.lat(),
+                'lon': result.geometry.location.lng()
               };
             });
 
-            if(geoResults.length === 1) {
+            if (geoResults.length === 1) {
               self.send('selectCity', geoResults[0]); // Send the first city.
             } else {
               self.set('isCitySearch', true);

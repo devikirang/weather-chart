@@ -24,10 +24,9 @@ module.exports = function(config) {
       'bower_components/handlebars/handlebars.js',
       'bower_components/ember/ember.debug.js',
       // endbower
-      'app/scripts/weatherApp.js',
+      'app/scripts/initApp.js',
       'app/scripts/searchApp.js',
       'app/scripts/chartJsApp.js',
-      'app/scripts/d3JsApp.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
