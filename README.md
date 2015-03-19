@@ -26,3 +26,6 @@ Run the below commands to download required dependencies.
 * `grunt clean` to clean the app distribution.
 * `grunt serve` to run the app with liveReload of app code.
 * `grunt serve:dist` to run app against it's distribution.
+
+## _Testing_
+* `grunt test` to run the Jasmine tests.

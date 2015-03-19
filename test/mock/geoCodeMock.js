@@ -567,7 +567,7 @@ var google = {
           if (responseData) {
             successCallback(responseData.results, responseData.status);
           } else {
-            successCallback({}, 'ZERO_RESULTS');
+            successCallback([], 'ZERO_RESULTS');
           }
         }
       };

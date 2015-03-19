@@ -39,6 +39,7 @@ $.ajaxPrefilter(function(options, originalOptions) {
 /* jshint unused: false */
 var AppAjaxService = {
   doGetCall: function(url, successCallback) {
+    console.log('Get call url='+ url);
     $('#loading').show();
     $.ajax({
       url: url,
