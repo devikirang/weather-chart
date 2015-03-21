@@ -1,5 +1,5 @@
 'use strict';
-describe('Weather App Search:', function() {
+describe('City Weather Forecast Tests:', function() {
     var weatherCityController;
 
     beforeAll(function() {
@@ -8,7 +8,7 @@ describe('Weather App Search:', function() {
 
     });
 
-    it('On Show forecast', function() {
+    it('Should show forecast using charts on show or refresh forecast', function() {
         // given
         expect(weatherCityController).not.toBeNull();
         var cityName = 'london',

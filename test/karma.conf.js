@@ -54,6 +54,7 @@ module.exports = function(config) {
       'karma-phantomjs-launcher',
       'karma-jasmine',
       'karma-coverage',
+      "karma-spec-reporter",
       'karma-htmlfile-reporter',
       'karma-junit-reporter'
     ],
@@ -66,7 +67,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
 
     // Uncomment the following lines if you are using grunt's server to run the tests
     // proxies: {
@@ -76,7 +77,7 @@ module.exports = function(config) {
     // urlRoot: '_karma_'
 
     // coverage reporter generates the coverage
-    reporters: ['progress', 'coverage', 'junit', 'html'],
+    reporters: ['progress', 'coverage', 'spec', 'junit', 'html'],
 
     preprocessors: {
       // source files, that you wanna generate coverage for
@@ -95,6 +96,10 @@ module.exports = function(config) {
         type: 'json',
         subdir: 'coverage-json'
       }, ]
+    },
+
+    specReporter: {
+      maxLogLines: 5
     },
 
     junitReporter: {

@@ -1,5 +1,5 @@
 'use strict';
-describe('Weather App City Search:', function() {
+describe('Weather App City Search Tests:', function() {
 
   var searchController;
 
@@ -9,15 +9,7 @@ describe('Weather App City Search:', function() {
 
   });
 
-  beforeEach(function() {
-    console.log('Running Test =' + jasmine.getEnv().currentSpec.description);
-  });
-
-  afterEach(function() {
-    console.log('Completed Test =' + jasmine.getEnv().currentSpec.description);
-  });
-
-  it('Empty City Search', function() {
+  it('Should show no results on empty city search', function() {
     // given
     expect(searchController).not.toBeNull();
 
@@ -32,7 +24,7 @@ describe('Weather App City Search:', function() {
     expect(searchController.get('model.hasResults')).toBe(false);
   });
 
-  it('London City Search', function() {
+  it('Should show all the London cities with city search "london"' , function() {
     // given
     expect(searchController).not.toBeNull();
 
@@ -47,7 +39,7 @@ describe('Weather App City Search:', function() {
     expect(searchController.get('model.geoResults').length).toEqual(4);
   });
 
-  it('Washington City Search', function() {
+  it('Should show all the Washington cities with city search "Washington"', function() {
     // given
     expect(searchController).not.toBeNull();
 
@@ -62,7 +54,7 @@ describe('Weather App City Search:', function() {
     expect(searchController.get('model.geoResults').length).toEqual(6);
   });
 
-  it('Bad input City Search', function() {
+  it('Should show no results on Bad input city search', function() {
     // given
     expect(searchController).not.toBeNull();
 
@@ -77,7 +69,7 @@ describe('Weather App City Search:', function() {
     expect(searchController.get('model.hasResults')).toBe(false);
   });
 
-  it('City Search should have Geo address, lat & lon infromation', function() {
+  it('Should have Geo address, lat & lon infromation on city search', function() {
     // given
     expect(searchController).not.toBeNull();
 

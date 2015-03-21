@@ -1,5 +1,5 @@
 'use strict';
-describe('City Weather Data:', function() {
+describe('City Get Weather Data Tests:', function() {
 
   var searchController;
 
@@ -9,7 +9,7 @@ describe('City Weather Data:', function() {
 
   });
 
-  it('On Select City, Call api for current weather', function() {
+  it('Should call the weather api on selecting a city from the search', function() {
     // given
     expect(searchController).not.toBeNull();
 
@@ -31,7 +31,7 @@ describe('City Weather Data:', function() {
   });
 
 
-  it('On Select City, have the weather data', function() {
+  it('Should have weather data available on selecting a city', function() {
     // given
     expect(searchController).not.toBeNull();
 
