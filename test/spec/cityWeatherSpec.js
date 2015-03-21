@@ -46,7 +46,7 @@ describe('City Weather Data:', function() {
     // when mock ajax call
     spyOn(searchController, 'transitionToRoute');
     spyOn(AppAjaxService, 'doGetCall').and.callFake(function(url, successCallback) {
-      console.log('Mock ajax resonse for current weather=' + url);
+      console.log('Mock ajax response for current weather=' + url);
       successCallback(CityMockData[cityName].current);
     });
     // and select the first city.

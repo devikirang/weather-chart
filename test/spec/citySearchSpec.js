@@ -69,7 +69,7 @@ describe('Weather App City Search:', function() {
     expect(searchController.get('model.hasResults')).toBe(false);
   });
 
-  it('Washington City Search', function() {
+  it('City Search should have Geo address, lat & lon infromation', function() {
     // given
     expect(searchController).not.toBeNull();
 
