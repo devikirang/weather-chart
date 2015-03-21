@@ -153,7 +153,8 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      coverage: 'coverage'
     },
 
     // Add vendor prefixed styles
@@ -185,7 +186,7 @@ module.exports = function (grunt) {
     // Automatically inject Bower components into the app
     wiredep: {
       app: {
-        src: ['<%= appConf.app %>/index.html', '<%= appConf.app %>/main.html'],
+        src: ['<%= appConf.app %>/index.html'],
         ignorePath:  /\.\.\//
       },
       test: {
@@ -222,7 +223,7 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: ['<%= appConf.app %>/index.html', '<%= appConf.app %>/main.html'],
+      html: ['<%= appConf.app %>/index.html'],
       options: {
         dest: '<%= appConf.dist %>',
         flow: {
@@ -376,6 +377,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'clean:coverage',
     'wiredep',
     'concurrent:test',
     'autoprefixer',
