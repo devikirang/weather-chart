@@ -9,6 +9,14 @@ describe('Weather App City Search:', function() {
 
   });
 
+  beforeEach(function() {
+    console.log('Running Test =' + jasmine.getEnv().currentSpec.description);
+  });
+
+  afterEach(function() {
+    console.log('Completed Test =' + jasmine.getEnv().currentSpec.description);
+  });
+
   it('Empty City Search', function() {
     // given
     expect(searchController).not.toBeNull();
