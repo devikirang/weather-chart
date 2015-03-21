@@ -5,7 +5,7 @@
 	* Update `OPEN_WEATHER_API_KEY` in `app/scripts/initApp.js`
 * Search city/ZIP using Google Maps API.
 	* Update `GOOGLE_MAP_API_KEY` in `app/index.html`
-* TODO need to use local Time Zone for charts, Right now time in GMT.
+* Using GMT time for charts (Need to use Google Time Zone API ).
 * Used Grunt tool for build and deployment.
 
 ## _Software Installation_

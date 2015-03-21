@@ -68,4 +68,23 @@ describe('Weather App City Search:', function() {
     expect(searchController.get('model.geoResults')).toEqual([]);
     expect(searchController.get('model.hasResults')).toBe(false);
   });
+
+  it('Washington City Search', function() {
+    // given
+    expect(searchController).not.toBeNull();
+
+    // when search city with empty string.
+    searchController.set('searchText', 'Washington');
+    searchController.send('searchCity');
+
+    // then
+    var searchResults = searchController.get('model.geoResults');
+    _.each(searchResults, function(searchResult) {
+      expect(searchResult.daddress).toBeDefined();
+      expect(searchResult.faddress).toBeDefined();
+      expect(searchResult.lat).toBeDefined();
+      expect(searchResult.lon).toBeDefined();
+    });
+
+  });
 });
