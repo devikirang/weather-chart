@@ -154,7 +154,7 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp',
-      coverage: 'coverage'
+      reports: 'reports'
     },
 
     // Add vendor prefixed styles
@@ -377,7 +377,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
-    'clean:coverage',
+    'clean:reports',
     'wiredep',
     'concurrent:test',
     'autoprefixer',

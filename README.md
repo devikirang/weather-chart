@@ -29,5 +29,7 @@ Run the below commands to download required dependencies.
 
 ## _Testing_
 * `grunt test` to run the Jasmine tests.
-  * 
-  * Coverage reports: coverage folder has the html and json code
+  * Junit test reports: `reports/test-results.xml`
+  * HTML test reports: `reports/test-results.html`
+  * Code Coverage HTML reports: `reports/coverage-html/index.html`
+  * Code Coverage JSON reports: `reports/coverage-json`

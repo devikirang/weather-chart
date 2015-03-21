@@ -53,7 +53,9 @@ module.exports = function(config) {
     plugins: [
       'karma-phantomjs-launcher',
       'karma-jasmine',
-      'karma-coverage'
+      'karma-coverage',
+      'karma-htmlfile-reporter',
+      'karma-junit-reporter'
     ],
 
     // Continuous Integration mode
@@ -74,7 +76,7 @@ module.exports = function(config) {
     // urlRoot: '_karma_'
 
     // coverage reporter generates the coverage
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'coverage', 'junit', 'html'],
 
     preprocessors: {
       // source files, that you wanna generate coverage for
@@ -85,14 +87,22 @@ module.exports = function(config) {
 
     // optionally, configure the reporter
     coverageReporter: {
-      dir: 'coverage/',
+      dir: 'reports/',
       reporters: [{
         type: 'html',
-        subdir: 'report-html'
+        subdir: 'coverage-html'
       }, {
         type: 'json',
-        subdir: 'report-json'
+        subdir: 'coverage-json'
       }, ]
+    },
+
+    junitReporter: {
+      outputFile: 'reports/test-results.xml'
+    },
+
+    htmlReporter: {
+      outputFile: 'reports/test-results.html'
     }
 
   });
