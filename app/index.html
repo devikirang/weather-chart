@@ -143,12 +143,12 @@
       </div>
       <div class="panel-body">
         <div class="row">
-          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 text-center">
+          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
             {{#each weather in wCityData.weather}}
-            <span>
-              {{weather-img weather.icon}}
-              <strong><i class='text-capitalize'>{{weather.description}}</i> </strong>
-            </span>
+            <div class='pull-right'>
+              <span> <strong><i class='text-capitalize'>{{weather.description}}</i> </strong> </span>
+              <span> {{weather-img weather.icon}} </span>
+            </div>
             {{/each}}
           </div>
           <div class="col-xs-5 col-sm-3 col-md-3 col-lg-3 text-center">

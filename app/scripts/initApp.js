@@ -38,6 +38,7 @@ $.ajaxPrefilter(function(options, originalOptions) {
 });
 
 /* jshint unused: false */
+/* istanbul ignore next */
 var AppAjaxService = {
   doGetCall: function(url, successCallback) {
     console.log('Get call url='+ url);

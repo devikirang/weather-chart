@@ -1,12 +1,12 @@
 body {
-	background: url(../images/bg.jpg) no-repeat center center fixed; 
+	background: url(../images/bg.jpg) no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 }
-.top-buffer { 
-	margin-top:20px; 
+.top-buffer {
+	margin-top:20px;
 }
 .navbar-nav a.active {
 	font-weight: bold;
@@ -16,9 +16,6 @@ body {
 }
 .btn-link.city-link:focus, .btn-link.city-link:hover {
 	text-decoration: none;
-}
-.img-thumbnail.weather-icon {
-	background: #DFF0D8;
 }
 .temp-info {
 	color: #A94869;
