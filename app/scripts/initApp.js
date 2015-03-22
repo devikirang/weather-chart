@@ -5,6 +5,7 @@ var App = Ember.Application.create();
 
 // Ajax Service
 // register AJAX prefilter : options, original options
+/* istanbul ignore next */
 $.ajaxPrefilter(function(options, originalOptions) {
 
   // retry not set or less than 2 : retry not requested
