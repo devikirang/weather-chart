@@ -1,7 +1,8 @@
 'use strict';
 describe('City Get Weather Data Tests:', function() {
 
-  var searchController;
+  var searchController,
+      cityName = 'london';
 
   beforeAll(function() {
     // controller
@@ -9,17 +10,19 @@ describe('City Get Weather Data Tests:', function() {
 
   });
 
-  it('Should call the weather api on selecting a city from the search', function() {
+  beforeEach(function() {
     // given
     expect(searchController).not.toBeNull();
 
     // when search for city
-    searchController.set('searchText', 'london');
+    searchController.set('searchText', cityName);
     searchController.send('searchCity');
 
     // then
     expect(searchController.get('model.geoResults').length).toEqual(4);
+  });
 
+  it('Should call the weather api on selecting a city from the search', function() {
     // when fake service call
     spyOn(AppAjaxService, 'doGetCall');
     // and select the first city.
@@ -32,17 +35,6 @@ describe('City Get Weather Data Tests:', function() {
 
 
   it('Should have weather data available on selecting a city', function() {
-    // given
-    expect(searchController).not.toBeNull();
-
-    // when search for city
-    var cityName = 'london';
-    searchController.set('searchText', cityName);
-    searchController.send('searchCity');
-
-    // then
-    expect(searchController.get('model.geoResults').length).toEqual(4);
-
     // when mock ajax call
     spyOn(searchController, 'transitionToRoute');
     spyOn(AppAjaxService, 'doGetCall').and.callFake(function(url, successCallback) {
@@ -57,25 +49,6 @@ describe('City Get Weather Data Tests:', function() {
     expect(searchController.get('isCitySearch')).toBe(false);
     expect(searchController.get('isCitySelected')).toBe(true);
     expect(geoCity.wCityData).toBeDefined();
-  });
-
-  it('Weather API city URLs verification', function() {
-    var searchUrl = URLs.search('london');
-    expect(searchUrl).toEqual('http://api.openweathermap.org/data/2.5/find?units=imperial&APPID=1111111111&q=london');
-
-    var cityUrl = URLs.cityId('123546');
-    expect(cityUrl).toEqual('http://api.openweathermap.org/data/2.5/weather?units=imperial&APPID=1111111111&id=123546');
-  });
-
-  it('Weather API lan and lat URLs verification', function() {
-    var lanLatUrl = URLs.geoLocation(53, -20);
-    expect(lanLatUrl).toEqual('http://api.openweathermap.org/data/2.5/weather?units=imperial&APPID=1111111111&lat=53&lon=-20');
-
-    var forecastUrl = URLs.forecast(28.6, -20);
-    expect(forecastUrl).toEqual('http://api.openweathermap.org/data/2.5/forecast?units=imperial&APPID=1111111111&lat=28.6&lon=-20');
-
-    var mapUrl = URLs.map(43, -51.34);
-    expect(mapUrl).toEqual('http://openweathermap.org/Maps?lat=43&lon=-51.34&zoom=12&layers=B0FTTFF');
   });
 
 });

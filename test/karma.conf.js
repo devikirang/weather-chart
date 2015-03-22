@@ -24,6 +24,8 @@ module.exports = function(config) {
       'bower_components/handlebars/handlebars.js',
       'bower_components/ember/ember.debug.js',
       // endbower
+      'bower_components/ember/ember-template-compiler.js',
+      'bower_components/ember/ember-testing.js',
       'app/scripts/initApp.js',
       'app/scripts/searchApp.js',
       'app/scripts/chartApp.js',
@@ -46,12 +48,13 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: [
-      'PhantomJS'
+      'Chrome'
     ],
 
     // Which plugins to enable
     plugins: [
       'karma-phantomjs-launcher',
+      'karma-chrome-launcher',
       'karma-jasmine',
       'karma-coverage',
       "karma-spec-reporter",

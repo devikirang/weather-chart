@@ -12,6 +12,7 @@ describe('City Weather Forecast Tests:', function() {
   beforeAll(function() {
     // controller
     weatherCityController = App.WeatherCityController.create();
+    weatherCityController.set('model.daddress', 'London UX');
 
   });
 
@@ -31,6 +32,7 @@ describe('City Weather Forecast Tests:', function() {
     weatherCityController.send('showUpdateCharts', wCityData);
 
     // then
+    expect(weatherCityController.get('hasCurrentWeather')).toBe(true);
     expect(weatherCityController.get('hasCharts')).toBe(true);
     expect(weatherCityController.get('noChartsPresent')).toBe(false);
   });

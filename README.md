@@ -15,6 +15,7 @@ Run the below commands to download required dependencies.
 * Install <a href="https://nodejs.org/download/" target="_blank">node.js</a>
 * `npm install -g bower`
 * `npm install -g grunt-cli`
+* `npm install -g karma-cli`
 * `npm install`  - for node_modules
 * `bower install` - for bower_components
 
