@@ -1,5 +1,5 @@
 'use strict';
-describe('Weather App City Search Tests:', function() {
+describe('Weather App City Search Suite', function() {
 
   var searchController;
 

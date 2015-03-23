@@ -1,5 +1,5 @@
 'use strict';
-describe('City Get Weather Data Tests:', function() {
+describe('City Get Weather Data Suite', function() {
 
   var searchController,
       cityName = 'london';

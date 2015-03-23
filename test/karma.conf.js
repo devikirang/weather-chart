@@ -25,10 +25,11 @@ module.exports = function(config) {
       'bower_components/ember/ember.debug.js',
       // endbower
       'bower_components/ember/ember-template-compiler.js',
-      'bower_components/ember/ember-testing.js',
       'app/scripts/initApp.js',
       'app/scripts/searchApp.js',
       'app/scripts/chartApp.js',
+      'bower_components/ember/ember-testing.js',
+      'test/test-setup.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
